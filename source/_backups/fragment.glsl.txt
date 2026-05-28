@@ -1,0 +1,141 @@
+#version 330 core
+out vec4 FragColor;
+
+in vec2 TexCoord;
+in vec3 FragPos;
+in vec3 Normal;
+in vec4 FragPosLightSpace;
+
+uniform sampler2D shadowMaps[3];
+uniform mat4 lightSpaceMatrices[3];
+uniform float cascadeSplits[4];
+uniform int numCascades;
+
+uniform sampler2D diffuseTexture;
+uniform samplerCube skybox;
+uniform float reflectivity;
+uniform vec3 viewPos;
+uniform vec3 objectColor;
+uniform float ambientStrength;
+uniform float specularStrength;
+uniform float shininess;
+uniform float bias;
+uniform float cascadeRadii[3];
+
+#define MAX_LIGHTS 8
+struct Light {
+    int type;
+    vec3 position;
+    vec3 direction;
+    vec3 color;
+    float intensity;
+    float constant;
+    float linear;
+    float quadratic;
+    float cutOff;
+    float outerCutOff;
+};
+uniform Light lights[MAX_LIGHTS];
+uniform int numLights;
+
+float shadowCalculation(vec3 projCoords, int cascadeIndex) {
+    if (projCoords.x < 0.0 || projCoords.x > 1.0 || projCoords.y < 0.0 || projCoords.y > 1.0 || projCoords.z > 1.0)
+        return 0.0;
+
+    float currentDepth = projCoords.z;
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowMaps[cascadeIndex], 0);
+    float radius = cascadeRadii[cascadeIndex];
+    int samples = 1;
+    if (cascadeIndex == 0) samples = 3;
+
+    for (int x = -samples; x <= samples; ++x) {
+        for (int y = -samples; y <= samples; ++y) {
+            vec2 offset = vec2(x, y) * texelSize * radius;
+            float closestDepth = texture(shadowMaps[cascadeIndex], projCoords.xy + offset).r;
+            shadow += currentDepth - bias > closestDepth ? 1.0 : 0.0;
+        }
+    }
+    shadow /= ( (2*samples+1)*(2*samples+1) );
+    return 1.0 - shadow;
+}
+
+vec3 calcLightContribution(Light light, vec3 norm, vec3 fragPos, vec3 viewDir, out float diffOut) {
+    vec3 lightDir;
+    float attenuation = 1.0;
+    float intensity = light.intensity;
+
+    if (light.type == 0) {
+        lightDir = normalize(-light.direction);
+    } else if (light.type == 1) {
+        vec3 lightVec = light.position - fragPos;
+        float dist = length(lightVec);
+        lightDir = lightVec / dist;
+        attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * dist * dist);
+    } else if (light.type == 2) {
+        vec3 lightVec = light.position - fragPos;
+        float dist = length(lightVec);
+        lightDir = lightVec / dist;
+        float theta = dot(lightDir, normalize(-light.direction));
+        float epsilon = light.cutOff - light.outerCutOff;
+        float spotFactor = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+        attenuation = spotFactor / (light.constant + light.linear * dist + light.quadratic * dist * dist);
+    }
+
+    float diff = max(dot(norm, lightDir), 0.0);
+    diffOut = diff;
+    vec3 diffuse = diff * light.color * intensity * attenuation;
+    vec3 halfDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(norm, halfDir), 0.0), shininess);
+    vec3 specular = specularStrength * spec * light.color * intensity * attenuation;
+    return diffuse + specular;
+}
+
+void main() {
+    vec4 texColor = texture(diffuseTexture, TexCoord);
+    if (texColor.a < 0.1) discard;
+
+    vec3 norm = normalize(Normal);
+    vec3 viewDir = normalize(viewPos - FragPos);
+
+    float dist = length(FragPos - viewPos);
+
+    int cascadeIndex = 0;
+    for (int i = 0; i < numCascades - 1; ++i) {
+        if (dist > cascadeSplits[i + 1]) cascadeIndex = i + 1;
+    }
+
+    vec4 fragPosLightSpace = lightSpaceMatrices[cascadeIndex] * vec4(FragPos, 1.0);
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+
+    float shadowFactor = 0.0;
+    if (cascadeIndex == numCascades - 1) {
+        shadowFactor = 1.0;
+    } else {
+        vec4 fragPosLightSpace = lightSpaceMatrices[cascadeIndex] * vec4(FragPos, 1.0);
+        vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+        projCoords = projCoords * 0.5 + 0.5;
+        shadowFactor = shadowCalculation(projCoords, cascadeIndex);
+    }
+
+    vec3 lighting = vec3(0.0);
+    float sunDiff = 0.0;
+    for (int i = 0; i < numLights; ++i) {
+        float diffFactor;
+        vec3 contrib = calcLightContribution(lights[i], norm, FragPos, viewDir, diffFactor);
+        if (i == 0 && lights[i].type == 0) sunDiff = diffFactor;
+        lighting += contrib;
+    }
+
+    vec3 ambient = ambientStrength * vec3(1.0);
+    vec3 diffuseColor = texColor.rgb * objectColor;
+    vec3 directLight = (ambient + shadowFactor * lighting) * diffuseColor;
+
+    float reflectionStrength = reflectivity * pow(sunDiff, 0.5) * (1.0 - (1.0 - shadowFactor) * 0.5);
+    vec3 incident = normalize(FragPos - viewPos);
+    vec3 reflection = reflect(incident, norm);
+    vec3 skyReflection = texture(skybox, reflection).rgb;
+    vec3 finalColor = mix(directLight, skyReflection, reflectionStrength);
+    FragColor = vec4(finalColor, texColor.a);
+}

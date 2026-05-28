@@ -1,0 +1,2772 @@
+{
+  "created": 1774097179,
+  "dimensions": {
+    "overworld": {
+      "biomes": [
+        {
+          "debugColor": [
+            0.20000000298023224,
+            0.800000011920929,
+            0.20000000298023224
+          ],
+          "materialSet": {
+            "materials": [
+              {
+                "blendStrength": 0.30000001192092896,
+                "color": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "emissive": 0.0,
+                "hasTexture": true,
+                "maxHeight": -15.0,
+                "metallic": 0.0,
+                "minHeight": -100.0,
+                "name": "ground",
+                "noiseFactor": 0.30000001192092896,
+                "roughness": 0.5,
+                "texturePath": "assets/images/terrain/ground.jpg",
+                "uvScale": 12.0
+              },
+              {
+                "blendStrength": 0.30000001192092896,
+                "color": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "emissive": 0.0,
+                "hasTexture": true,
+                "maxHeight": 100.0,
+                "metallic": 0.0,
+                "minHeight": -15.0,
+                "name": "grass",
+                "noiseFactor": 0.30000001192092896,
+                "roughness": 0.5,
+                "texturePath": "assets/images/terrain/grass.jpg",
+                "uvScale": 10.0
+              }
+            ],
+            "name": "plains_materials"
+          },
+          "name": "plains",
+          "noiseParams": {
+            "amplitude": 7.0,
+            "baseFreq": 0.014999999664723873,
+            "erosion": 0.20000000298023224,
+            "maxHeight": -10.0,
+            "minHeight": 1.2000000476837158,
+            "noiseType": 0,
+            "octaves": 3,
+            "persistence": 0.15000000596046448,
+            "redistribution": 2.0,
+            "roughness": 5.0
+          },
+          "structures": [
+            {
+              "density": 0.5,
+              "maxHeight": 15.0,
+              "maxSlope": 15.0,
+              "minHeight": -15.0,
+              "minSlope": 0.0,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "probability": 0.30000001192092896,
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "spacing": 6.0
+            }
+          ]
+        },
+        {
+          "debugColor": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "materialSet": {
+            "materials": [
+              {
+                "blendStrength": 0.30000001192092896,
+                "color": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "emissive": 0.0,
+                "hasTexture": true,
+                "maxHeight": -5.0,
+                "metallic": 0.0,
+                "minHeight": -40.0,
+                "name": "ground",
+                "noiseFactor": 0.30000001192092896,
+                "roughness": 0.5,
+                "texturePath": "assets/images/terrain/ground.jpg",
+                "uvScale": 12.0
+              },
+              {
+                "blendStrength": 0.30000001192092896,
+                "color": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "emissive": 0.0,
+                "hasTexture": true,
+                "maxHeight": 10.0,
+                "metallic": 0.0,
+                "minHeight": -5.0,
+                "name": "rock",
+                "noiseFactor": 0.30000001192092896,
+                "roughness": 0.5,
+                "texturePath": "assets/images/terrain/rock.jpg",
+                "uvScale": 14.0
+              },
+              {
+                "blendStrength": 0.30000001192092896,
+                "color": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "emissive": 0.0,
+                "hasTexture": true,
+                "maxHeight": 50.0,
+                "metallic": 0.0,
+                "minHeight": 10.0,
+                "name": "snow",
+                "noiseFactor": 0.30000001192092896,
+                "roughness": 0.5,
+                "texturePath": "assets/images/terrain/snow.jpg",
+                "uvScale": 10.0
+              }
+            ],
+            "name": "mountains_materials"
+          },
+          "name": "mountains",
+          "noiseParams": {
+            "amplitude": 30.0,
+            "baseFreq": 0.05000000074505806,
+            "erosion": 0.20000000298023224,
+            "maxHeight": 0.0,
+            "minHeight": 1.0,
+            "noiseType": 0,
+            "octaves": 5,
+            "persistence": 0.20000000298023224,
+            "redistribution": 1.0,
+            "roughness": 70.0
+          },
+          "structures": [
+            {
+              "density": 0.5,
+              "maxHeight": 60.0,
+              "maxSlope": 60.0,
+              "minHeight": 0.0,
+              "minSlope": 20.0,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "probability": 0.25,
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "spacing": 5.0
+            }
+          ]
+        }
+      ],
+      "chunks": {
+        "-1_-1": {
+          "gridX": -1,
+          "gridZ": -1
+        },
+        "-1_-2": {
+          "gridX": -1,
+          "gridZ": -2
+        },
+        "-1_-3": {
+          "gridX": -1,
+          "gridZ": -3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                -8.859590530395508,
+                3.4103446006774902,
+                -66.23030853271484
+              ],
+              "rotation": [
+                0.0,
+                1.4420359134674072,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "-1_-4": {
+          "gridX": -1,
+          "gridZ": -4,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                -13.976137161254883,
+                5.109070777893066,
+                -101.35136413574219
+              ],
+              "rotation": [
+                0.0,
+                3.9642698764801025,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "-1_-5": {
+          "gridX": -1,
+          "gridZ": -5
+        },
+        "-1_0": {
+          "gridX": -1,
+          "gridZ": 0,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -10.35350227355957,
+                -5.6305389404296875,
+                3.1668589115142822
+              ],
+              "rotation": [
+                0.0,
+                0.6522839665412903,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-1_1": {
+          "gridX": -1,
+          "gridZ": 1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -28.66541290283203,
+                -1.4505441188812256,
+                34.116939544677734
+              ],
+              "rotation": [
+                0.0,
+                0.7284901142120361,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -10.004861831665039,
+                -0.1465303897857666,
+                45.25397872924805
+              ],
+              "rotation": [
+                0.0,
+                3.9746787548065186,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-1_2": {
+          "gridX": -1,
+          "gridZ": 2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -22.24580192565918,
+                -2.6653547286987305,
+                89.38983154296875
+              ],
+              "rotation": [
+                0.0,
+                0.9010598063468933,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-1_3": {
+          "gridX": -1,
+          "gridZ": 3
+        },
+        "-2_-1": {
+          "gridX": -2,
+          "gridZ": -1
+        },
+        "-2_-2": {
+          "gridX": -2,
+          "gridZ": -2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -59.514801025390625,
+                1.5141218900680542,
+                -46.626243591308594
+              ],
+              "rotation": [
+                0.0,
+                5.730774402618408,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-2_-3": {
+          "gridX": -2,
+          "gridZ": -3
+        },
+        "-2_-4": {
+          "gridX": -2,
+          "gridZ": -4
+        },
+        "-2_-5": {
+          "gridX": -2,
+          "gridZ": -5,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                -35.01000213623047,
+                5.577988147735596,
+                -142.90496826171875
+              ],
+              "rotation": [
+                0.0,
+                5.801901817321777,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "-2_0": {
+          "gridX": -2,
+          "gridZ": 0,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -59.3123779296875,
+                -2.168520450592041,
+                3.2985947132110596
+              ],
+              "rotation": [
+                0.0,
+                4.539892673492432,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-2_1": {
+          "gridX": -2,
+          "gridZ": 1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -59.796104431152344,
+                -0.4587275981903076,
+                46.133766174316406
+              ],
+              "rotation": [
+                0.0,
+                3.1917531490325928,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-2_2": {
+          "gridX": -2,
+          "gridZ": 2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -34.40256118774414,
+                -3.1708316802978516,
+                88.44284057617188
+              ],
+              "rotation": [
+                0.0,
+                2.4629757404327393,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-2_3": {
+          "gridX": -2,
+          "gridZ": 3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -46.32389450073242,
+                -4.135937690734863,
+                108.76531982421875
+              ],
+              "rotation": [
+                0.0,
+                0.5636412501335144,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -40.215850830078125,
+                -4.095010280609131,
+                119.26174926757813
+              ],
+              "rotation": [
+                0.0,
+                6.042420864105225,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-3_-1": {
+          "gridX": -3,
+          "gridZ": -1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -78.38863372802734,
+                2.4655120372772217,
+                -16.811626434326172
+              ],
+              "rotation": [
+                0.0,
+                5.871510982513428,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -65.67387390136719,
+                0.9763040542602539,
+                -16.72661590576172
+              ],
+              "rotation": [
+                0.0,
+                0.7494130730628967,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-3_-2": {
+          "gridX": -3,
+          "gridZ": -2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -83.48590850830078,
+                4.003257751464844,
+                -41.20698165893555
+              ],
+              "rotation": [
+                0.0,
+                1.2212293148040771,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-3_-3": {
+          "gridX": -3,
+          "gridZ": -3
+        },
+        "-3_-4": {
+          "gridX": -3,
+          "gridZ": -4,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -77.15290832519531,
+                0.8587868213653564,
+                -109.12657165527344
+              ],
+              "rotation": [
+                0.0,
+                2.9141337871551514,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-3_-5": {
+          "gridX": -3,
+          "gridZ": -5
+        },
+        "-3_0": {
+          "gridX": -3,
+          "gridZ": 0,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -66.09637451171875,
+                -2.0139269828796387,
+                8.977213859558105
+              ],
+              "rotation": [
+                0.0,
+                3.9529991149902344,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -66.05809020996094,
+                -2.2430295944213867,
+                14.858023643493652
+              ],
+              "rotation": [
+                0.0,
+                2.6147007942199707,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-3_1": {
+          "gridX": -3,
+          "gridZ": 1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -90.47136688232422,
+                0.8715097904205322,
+                40.779598236083984
+              ],
+              "rotation": [
+                0.0,
+                4.167579650878906,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -83.92852783203125,
+                1.3016637563705444,
+                57.56342315673828
+              ],
+              "rotation": [
+                0.0,
+                3.437319278717041,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-3_2": {
+          "gridX": -3,
+          "gridZ": 2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -89.45591735839844,
+                -0.8117461204528809,
+                88.9351577758789
+              ],
+              "rotation": [
+                0.0,
+                1.3319758176803589,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-3_3": {
+          "gridX": -3,
+          "gridZ": 3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -89.80934143066406,
+                -1.0665035247802734,
+                95.7561264038086
+              ],
+              "rotation": [
+                0.0,
+                6.128811836242676,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -90.55560302734375,
+                -0.9709868431091309,
+                101.33070373535156
+              ],
+              "rotation": [
+                0.0,
+                6.250887393951416,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -72.07029724121094,
+                -1.809852123260498,
+                119.36222076416016
+              ],
+              "rotation": [
+                0.0,
+                2.1159119606018066,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-4_-1": {
+          "gridX": -4,
+          "gridZ": -1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -115.4158706665039,
+                -0.6550335884094238,
+                -21.981746673583984
+              ],
+              "rotation": [
+                0.0,
+                3.2877514362335205,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -115.05892181396484,
+                -0.374267578125,
+                -15.903594017028809
+              ],
+              "rotation": [
+                0.0,
+                5.566657543182373,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-4_-2": {
+          "gridX": -4,
+          "gridZ": -2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -115.42743682861328,
+                -2.3974714279174805,
+                -47.80272674560547
+              ],
+              "rotation": [
+                0.0,
+                6.153709888458252,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -109.60282135009766,
+                -1.6318540573120117,
+                -40.75474166870117
+              ],
+              "rotation": [
+                0.0,
+                3.616839647293091,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-4_-3": {
+          "gridX": -4,
+          "gridZ": -3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -103.48538970947266,
+                -0.8535876274108887,
+                -78.23294067382813
+              ],
+              "rotation": [
+                0.0,
+                0.039977096021175385,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-4_-4": {
+          "gridX": -4,
+          "gridZ": -4,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -102.84583282470703,
+                2.100433588027954,
+                -121.50306701660156
+              ],
+              "rotation": [
+                0.0,
+                5.356845855712891,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -96.5937271118164,
+                1.0706238746643066,
+                -108.31449890136719
+              ],
+              "rotation": [
+                0.0,
+                5.923626899719238,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-4_-5": {
+          "gridX": -4,
+          "gridZ": -5,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -96.6368408203125,
+                1.5009539127349854,
+                -152.8627471923828
+              ],
+              "rotation": [
+                0.0,
+                1.9998142719268799,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -108.11430358886719,
+                2.6691195964813232,
+                -134.79220581054688
+              ],
+              "rotation": [
+                0.0,
+                4.8575968742370605,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-4_0": {
+          "gridX": -4,
+          "gridZ": 0
+        },
+        "-4_1": {
+          "gridX": -4,
+          "gridZ": 1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -115.36075592041016,
+                -1.2112956047058105,
+                45.296058654785156
+              ],
+              "rotation": [
+                0.0,
+                1.2323578596115112,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -109.59965515136719,
+                -0.04109930992126465,
+                45.92555236816406
+              ],
+              "rotation": [
+                0.0,
+                4.563324928283691,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -96.31897735595703,
+                2.555277109146118,
+                52.06346130371094
+              ],
+              "rotation": [
+                0.0,
+                4.895336151123047,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-4_2": {
+          "gridX": -4,
+          "gridZ": 2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -97.2320785522461,
+                2.4501523971557617,
+                65.79293823242188
+              ],
+              "rotation": [
+                0.0,
+                1.9174433946609497,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-5_-1": {
+          "gridX": -5,
+          "gridZ": -1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -127.52615356445313,
+                -0.3302955627441406,
+                -15.893366813659668
+              ],
+              "rotation": [
+                0.0,
+                2.463557243347168,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -152.02174377441406,
+                0.30888867378234863,
+                -4.363193511962891
+              ],
+              "rotation": [
+                0.0,
+                3.3576929569244385,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-5_-2": {
+          "gridX": -5,
+          "gridZ": -2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -139.177978515625,
+                -1.140641212463379,
+                -41.83924102783203
+              ],
+              "rotation": [
+                0.0,
+                3.600627899169922,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -127.97394561767578,
+                -1.4148592948913574,
+                -34.84894561767578
+              ],
+              "rotation": [
+                0.0,
+                5.247256755828857,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-5_-3": {
+          "gridX": -5,
+          "gridZ": -3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -151.33541870117188,
+                0.37785863876342773,
+                -90.12360382080078
+              ],
+              "rotation": [
+                0.0,
+                4.470043182373047,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -140.8039093017578,
+                0.35770559310913086,
+                -89.49681091308594
+              ],
+              "rotation": [
+                0.0,
+                4.222727298736572,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -151.2076873779297,
+                1.9666943550109863,
+                -83.43106079101563
+              ],
+              "rotation": [
+                0.0,
+                3.190781593322754,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-5_-4": {
+          "gridX": -5,
+          "gridZ": -4,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -133.5196533203125,
+                -2.155339241027832,
+                -121.0557632446289
+              ],
+              "rotation": [
+                0.0,
+                5.416494369506836,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-5_-5": {
+          "gridX": -5,
+          "gridZ": -5,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -151.2151641845703,
+                -1.7002615928649902,
+                -145.3205108642578
+              ],
+              "rotation": [
+                0.0,
+                3.723073959350586,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-5_0": {
+          "gridX": -5,
+          "gridZ": 0
+        },
+        "-5_1": {
+          "gridX": -5,
+          "gridZ": 1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -140.2282257080078,
+                -2.994359016418457,
+                46.33177947998047
+              ],
+              "rotation": [
+                0.0,
+                2.960862874984741,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "-5_2": {
+          "gridX": -5,
+          "gridZ": 2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -151.5406036376953,
+                -2.8979759216308594,
+                64.18108367919922
+              ],
+              "rotation": [
+                0.0,
+                3.8372602462768555,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -140.51747131347656,
+                -1.6960110664367676,
+                65.66862487792969
+              ],
+              "rotation": [
+                0.0,
+                0.6892661452293396,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -140.0472869873047,
+                -1.1062140464782715,
+                71.17009735107422
+              ],
+              "rotation": [
+                0.0,
+                1.1028871536254883,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -139.8748016357422,
+                -0.6876673698425293,
+                82.3659896850586
+              ],
+              "rotation": [
+                0.0,
+                2.76001238822937,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                -151.95948791503906,
+                -2.067371368408203,
+                88.36265563964844
+              ],
+              "rotation": [
+                0.0,
+                0.18537408113479614,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "0_-1": {
+          "gridX": 0,
+          "gridZ": -1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                2.3815319538116455,
+                1.862151026725769,
+                -17.975656509399414
+              ],
+              "rotation": [
+                0.0,
+                2.7434561252593994,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "0_-2": {
+          "gridX": 0,
+          "gridZ": -2
+        },
+        "0_-3": {
+          "gridX": 0,
+          "gridZ": -3
+        },
+        "0_-4": {
+          "gridX": 0,
+          "gridZ": -4,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                6.974936008453369,
+                1.0481148958206177,
+                -96.62393188476563
+              ],
+              "rotation": [
+                0.0,
+                3.1284074783325195,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "0_-5": {
+          "gridX": 0,
+          "gridZ": -5
+        },
+        "0_0": {
+          "gridX": 0,
+          "gridZ": 0
+        },
+        "0_1": {
+          "gridX": 0,
+          "gridZ": 1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                27.505699157714844,
+                -2.8982419967651367,
+                57.767974853515625
+              ],
+              "rotation": [
+                0.0,
+                3.384171724319458,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "0_2": {
+          "gridX": 0,
+          "gridZ": 2
+        },
+        "0_3": {
+          "gridX": 0,
+          "gridZ": 3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                21.63839340209961,
+                -1.8736662864685059,
+                114.24726867675781
+              ],
+              "rotation": [
+                0.0,
+                1.355733036994934,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                15.805931091308594,
+                -1.7881269454956055,
+                119.510498046875
+              ],
+              "rotation": [
+                0.0,
+                3.998440980911255,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "1_-1": {
+          "gridX": 1,
+          "gridZ": -1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                32.94548797607422,
+                6.315186500549316,
+                -28.402549743652344
+              ],
+              "rotation": [
+                0.0,
+                0.7284901142120361,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "1_-2": {
+          "gridX": 1,
+          "gridZ": -2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                33.08050537109375,
+                11.84872055053711,
+                -44.57392883300781
+              ],
+              "rotation": [
+                0.0,
+                4.1333465576171875,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "1_-3": {
+          "gridX": 1,
+          "gridZ": -3
+        },
+        "1_-4": {
+          "gridX": 1,
+          "gridZ": -4
+        },
+        "1_-5": {
+          "gridX": 1,
+          "gridZ": -5,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                43.39408493041992,
+                1.3782936334609985,
+                -146.90682983398438
+              ],
+              "rotation": [
+                0.0,
+                1.7576080560684204,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "1_0": {
+          "gridX": 1,
+          "gridZ": 0,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                48.2977294921875,
+                3.588258743286133,
+                6.9456377029418945
+              ],
+              "rotation": [
+                0.0,
+                6.014793872833252,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "1_1": {
+          "gridX": 1,
+          "gridZ": 1
+        },
+        "1_2": {
+          "gridX": 1,
+          "gridZ": 2
+        },
+        "1_3": {
+          "gridX": 1,
+          "gridZ": 3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                39.81755447387695,
+                -1.4598159790039063,
+                101.8350830078125
+              ],
+              "rotation": [
+                0.0,
+                6.203702926635742,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                34.847747802734375,
+                -1.3155498504638672,
+                113.75830078125
+              ],
+              "rotation": [
+                0.0,
+                0.24674862623214722,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                58.22188186645508,
+                0.803584098815918,
+                113.40444946289063
+              ],
+              "rotation": [
+                0.0,
+                4.365354061126709,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                34.86717224121094,
+                -1.2665715217590332,
+                120.6971435546875
+              ],
+              "rotation": [
+                0.0,
+                4.951439380645752,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "2_-1": {
+          "gridX": 2,
+          "gridZ": -1
+        },
+        "2_-2": {
+          "gridX": 2,
+          "gridZ": -2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                63.75299835205078,
+                12.653194427490234,
+                -34.662010192871094
+              ],
+              "rotation": [
+                0.0,
+                0.2632621228694916,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "2_-3": {
+          "gridX": 2,
+          "gridZ": -3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                73.9073715209961,
+                2.1570301055908203,
+                -90.05745697021484
+              ],
+              "rotation": [
+                0.0,
+                3.31298828125,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "2_-4": {
+          "gridX": 2,
+          "gridZ": -4
+        },
+        "2_-5": {
+          "gridX": 2,
+          "gridZ": -5
+        },
+        "2_0": {
+          "gridX": 2,
+          "gridZ": 0,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                89.36933135986328,
+                0.8485807180404663,
+                2.065091609954834
+              ],
+              "rotation": [
+                0.0,
+                4.810673236846924,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                65.15599060058594,
+                5.29164457321167,
+                6.93336296081543
+              ],
+              "rotation": [
+                0.0,
+                6.189195156097412,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                64.73150634765625,
+                1.128720998764038,
+                11.825643539428711
+              ],
+              "rotation": [
+                0.0,
+                5.877024173736572,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                90.2385482788086,
+                0.698778510093689,
+                12.760661125183105
+              ],
+              "rotation": [
+                0.0,
+                4.824004650115967,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "2_1": {
+          "gridX": 2,
+          "gridZ": 1,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                89.19210815429688,
+                1.2081060409545898,
+                57.92174530029297
+              ],
+              "rotation": [
+                0.0,
+                3.1559300422668457,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "2_2": {
+          "gridX": 2,
+          "gridZ": 2
+        },
+        "2_3": {
+          "gridX": 2,
+          "gridZ": 3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                77.81954956054688,
+                4.370871543884277,
+                107.83677673339844
+              ],
+              "rotation": [
+                0.0,
+                1.5175668001174927,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                89.49578094482422,
+                3.8426318168640137,
+                119.31861877441406
+              ],
+              "rotation": [
+                0.0,
+                0.550470232963562,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        },
+        "3_-1": {
+          "gridX": 3,
+          "gridZ": -1
+        },
+        "3_-2": {
+          "gridX": 3,
+          "gridZ": -2,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                95.54853820800781,
+                2.501671552658081,
+                -53.75091552734375
+              ],
+              "rotation": [
+                0.0,
+                3.1893742084503174,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                110.5665283203125,
+                11.96806812286377,
+                -39.763954162597656
+              ],
+              "rotation": [
+                0.0,
+                4.796385288238525,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "3_-3": {
+          "gridX": 3,
+          "gridZ": -3
+        },
+        "3_-4": {
+          "gridX": 3,
+          "gridZ": -4,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                120.98687744140625,
+                2.5564322471618652,
+                -121.26315307617188
+              ],
+              "rotation": [
+                0.0,
+                1.5350098609924316,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/rock.obj",
+              "modelScale": [
+                3.0,
+                1.25,
+                3.0
+              ],
+              "position": [
+                100.0055923461914,
+                3.3441340923309326,
+                -106.92426300048828
+              ],
+              "rotation": [
+                0.0,
+                5.386035442352295,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "structName": "mountains_rock",
+              "type": 1
+            }
+          ]
+        },
+        "3_-5": {
+          "gridX": 3,
+          "gridZ": -5
+        },
+        "3_0": {
+          "gridX": 3,
+          "gridZ": 0
+        },
+        "3_1": {
+          "gridX": 3,
+          "gridZ": 1
+        },
+        "3_2": {
+          "gridX": 3,
+          "gridZ": 2
+        },
+        "3_3": {
+          "gridX": 3,
+          "gridZ": 3,
+          "structures": [
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                114.04130554199219,
+                4.288341522216797,
+                107.13922882080078
+              ],
+              "rotation": [
+                0.0,
+                2.942349910736084,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            },
+            {
+              "isStatic": true,
+              "modelPath": "assets/models/tree.obj",
+              "modelScale": [
+                3.5,
+                1.0,
+                3.5
+              ],
+              "position": [
+                113.9140625,
+                3.646167755126953,
+                114.11592864990234
+              ],
+              "rotation": [
+                0.0,
+                4.436122417449951,
+                0.0
+              ],
+              "scale": [
+                1.5,
+                5.0,
+                1.5
+              ],
+              "structName": "plains_tree",
+              "type": 1
+            }
+          ]
+        }
+      },
+      "dayNightCycle_Enabled": true,
+      "dayNightCycle_Speed": 0.001500000013038516,
+      "name": "overworld",
+      "noiseParams": [
+        0.05000000074505806,
+        6.0,
+        0.5
+      ],
+      "skybox": [
+        "assets/images/skybox/overworld/right.jpg",
+        "assets/images/skybox/overworld/left.jpg",
+        "assets/images/skybox/overworld/top.jpg",
+        "assets/images/skybox/overworld/bottom.jpg",
+        "assets/images/skybox/overworld/front.jpg",
+        "assets/images/skybox/overworld/back.jpg"
+      ],
+      "spawnPoint": [
+        0.0,
+        10.0,
+        0.0
+      ],
+      "sunlight": {
+        "color": [
+          1.0,
+          0.8721345663070679,
+          0.6721345782279968
+        ],
+        "constant": 1.0,
+        "cutOff": 12.5,
+        "direction": [
+          0.48607683181762695,
+          0.6718713045120239,
+          -0.5588545203208923
+        ],
+        "enableGodRays": true,
+        "enabled": true,
+        "intensity": 0.6442691683769226,
+        "linear": 0.09000000357627869,
+        "outerCutOff": 15.0,
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quadratic": 0.03200000151991844,
+        "rayDecay": 0.9700000286102295,
+        "rayDensity": 0.8999999761581421,
+        "rayExposure": 0.30000001192092896,
+        "raySize": 0.05000000074505806,
+        "rayWeight": 0.10000000149011612,
+        "type": 0
+      },
+      "timeOfDay": 0.38606730103492737
+    }
+  },
+  "lastPlayed": 1774097226,
+  "name": "New World",
+  "seed": 1161083020,
+  "version": 1
+}

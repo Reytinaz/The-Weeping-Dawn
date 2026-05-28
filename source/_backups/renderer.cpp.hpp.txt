@@ -1,0 +1,329 @@
+#include "renderer.hpp"
+#include "glad.h"
+
+Renderer::Renderer(int w, int h) : width(w), height(h), shadowMap(nullptr), shader(nullptr), skybox(nullptr), chunkManager(nullptr) {}
+
+Renderer::~Renderer() {
+    delete shadowMap;
+    delete skybox;
+    delete shader;
+}
+
+bool Renderer::init() {
+    shader = new Shader();
+    skybox = new Skybox();
+    shadowMap = new ShadowMap(4096, 4096, 3);
+
+    if (!shader->loadFromFile("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl")) {
+        std::cerr << "Failed to load shader files, falling back to embedded shaders" << std::endl;
+
+        const char* vertexSrc = R"(
+            #version 330 core
+            layout (location = 0) in vec3 aPos;
+            layout (location = 1) in vec3 aNormal;
+
+            uniform mat4 model;
+            uniform mat4 view;
+            uniform mat4 projection;
+            uniform mat4 lightSpaceMatrix;
+
+            out vec3 FragPos;
+            out vec3 Normal;
+            out vec4 FragPosLightSpace;
+
+            void main() {
+                FragPos = vec3(model * vec4(aPos, 1.0));
+                Normal = mat3(transpose(inverse(model))) * aNormal;
+                FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
+                gl_Position = projection * view * vec4(FragPos, 1.0);
+            }
+        )";
+
+        const char* fragSrc = R"(
+            #version 330 core
+            out vec4 FragColor;
+
+            in vec3 FragPos;
+            in vec3 Normal;
+            in vec4 FragPosLightSpace;
+
+            uniform sampler2D shadowMap;
+            uniform vec3 objectColor;
+            uniform vec3 lightColor;
+            uniform vec3 lightPos;
+            uniform vec3 viewPos;
+
+            float ShadowCalculation(vec4 fragPosLightSpace) {
+                vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+                projCoords = projCoords * 0.5 + 0.5;
+                
+                if (projCoords.z > 1.0) return 0.0;
+                
+                float closestDepth = texture(shadowMap, projCoords.xy).r;
+                float currentDepth = projCoords.z;
+                
+                float bias = 0.005;
+                float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+                
+                return shadow;
+            }
+
+            void main() {
+                // Ambient
+                float ambientStrength = 0.1;
+                vec3 ambient = ambientStrength * lightColor;
+                
+                // Diffuse
+                vec3 norm = normalize(Normal);
+                vec3 lightDir = normalize(lightPos - FragPos);
+                float diff = max(dot(norm, lightDir), 0.0);
+                vec3 diffuse = diff * lightColor;
+                
+                // Specular
+                float specularStrength = 0.5;
+                vec3 viewDir = normalize(viewPos - FragPos);
+                vec3 reflectDir = reflect(-lightDir, norm);
+                float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+                vec3 specular = specularStrength * spec * lightColor;
+                
+                // Тень
+                float shadow = ShadowCalculation(FragPosLightSpace);
+                
+                vec3 result = (ambient + (1.0 - shadow) * (diffuse + specular)) * objectColor;
+                FragColor = vec4(result, 1.0);
+            }
+        )";
+
+        if (!shader->loadFromSource(vertexSrc, fragSrc)) {
+            std::cerr << "Failed to load embedded shaders" << std::endl;
+            return false;
+        }
+        else std::cout << "Loaded embedded shaders" << std::endl;
+    }
+    shader->use();
+
+    shader->setUniform("ambientStrength", 0.4f);
+    shader->setUniform("specularStrength", 0.0f);
+    shader->setUniform("shininess", 32.0f);
+    shader->setUniform("reflectivity", 0.1f);
+    shader->setUniform("bias", 0.001f);
+    shader->setUniform("lightBleedingReduction", 0.5f);
+
+    shader->setUniform("skybox", 2);
+    shader->setUniform("diffuseTexture", 1);
+    shader->setUniform("shadowMap", 0);
+
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+
+    if (!shadowMap->init()) {
+        std::cerr << "Failed to init shadow map" << std::endl;
+        delete shadowMap;
+        shadowMap = nullptr;
+        return false;
+    }
+    std::vector<std::string> faces = {
+        "assets/images/skybox/right.jpg",
+        "assets/images/skybox/left.jpg",
+        "assets/images/skybox/top.jpg",
+        "assets/images/skybox/bottom.jpg",
+        "assets/images/skybox/front.jpg",
+        "assets/images/skybox/back.jpg"
+    };
+    if (!skybox->load(faces)) {
+        std::cerr << "Failed to load skybox" << std::endl;
+    }
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skybox->getTextureID());
+
+    glGenTextures(1, &whiteTexture);
+    glBindTexture(GL_TEXTURE_2D, whiteTexture);
+    unsigned char whitePixel[] = { 255, 255, 255, 255 };
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    return true;
+}
+
+void Renderer::setSize(int w, int h) {
+    width = w; height = h;
+    if (camera) camera->aspectRatio = static_cast<float>(w) / h;
+    glViewport(0, 0, w, h);
+}
+
+void Renderer::setDebug(bool b) {
+    debugEnabled = b;
+}
+
+void Renderer::clear() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, float viewDistance) {
+    if (!shadowMap) return;
+
+    float nearPlane = camera->nearPlane; 
+    float farPlane = viewDistance * 200.0f;
+
+    shadowMap->render(objects, camera->position, nearPlane, farPlane*1.5f, *camera);
+
+    glViewport(0, 0, width, height);
+    clear();
+    shader->use();
+
+    shader->setUniform("numLights", (int)shadowMap->lights.size());
+    for (size_t i = 0; i < shadowMap->lights.size() && i < 8; i++) {
+        std::string prefix = "lights[" + std::to_string(i) + "]";
+        shader->setUniform(prefix + ".type", shadowMap->lights[i].type);
+        shader->setUniform(prefix + ".position", shadowMap->lights[i].position);
+        shader->setUniform(prefix + ".direction", shadowMap->lights[i].direction);
+        shader->setUniform(prefix + ".color", shadowMap->lights[i].color);
+        shader->setUniform(prefix + ".intensity", shadowMap->lights[i].intensity);
+        shader->setUniform(prefix + ".constant", shadowMap->lights[i].constant);
+        shader->setUniform(prefix + ".linear", shadowMap->lights[i].linear);
+        shader->setUniform(prefix + ".quadratic", shadowMap->lights[i].quadratic);
+        shader->setUniform(prefix + ".cutOff", static_cast<float>(cos(shadowMap->lights[i].cutOff * M_PI / 180.0f)));
+        shader->setUniform(prefix + ".outerCutOff", static_cast<float>(cos(shadowMap->lights[i].outerCutOff * M_PI / 180.0f)));
+    }
+
+    Matrix4 view = camera->getViewMatrix();
+    Matrix4 proj = camera->getProjectionMatrix();
+    shader->setUniform("view", view);
+    shader->setUniform("projection", proj);
+    shader->setUniform("viewPos", camera->position);
+    shader->setUniform("viewDistance", viewDistance);
+    shader->setUniform("cameraPos", camera->position);
+
+    unsigned int shadowUnitStart = 3;
+    shadowMap->bindTextures(shadowUnitStart);
+    for (int i = 0; i < shadowMap->getNumCascades(); ++i) {
+        std::string name = "shadowMaps[" + std::to_string(i) + "]";
+        shader->setUniform(name, shadowUnitStart + i);
+    }
+    for (int i = 0; i < shadowMap->getNumCascades(); ++i) {
+        std::string name = "lightSpaceMatrices[" + std::to_string(i) + "]";
+        const Matrix4& mat = shadowMap->getLightSpaceMatrix(i);
+        shader->setUniform(name, mat.ptr(), 16);
+    }
+
+    const auto& splits = shadowMap->getCascadeSplitsVector();
+    for (size_t i = 0; i < splits.size(); ++i) {
+        std::string name = "cascadeSplits[" + std::to_string(i) + "]";
+        shader->setUniform(name, splits[i]);
+    }
+    shader->setUniform("numCascades", shadowMap->getNumCascades());
+
+    float radii[3] = { 1.25f, 2.75f, 3.5f }; 
+    for (int i = 0; i < shadowMap->getNumCascades(); ++i) {
+        std::string name = "cascadeRadii[" + std::to_string(i) + "]";
+        shader->setUniform(name, radii[i]);
+    }
+
+    for (auto& obj : objects) {
+        if (!obj->visible) continue;
+        shader->setUniform("model", obj->getTransform());
+        shader->setUniform("objectColor", obj->color[0], obj->color[1], obj->color[2]);
+
+        glActiveTexture(GL_TEXTURE1);
+        if (obj->diffuseTexture) {
+            glBindTexture(GL_TEXTURE_2D, obj->diffuseTexture->getId());
+        }
+        else {
+            glBindTexture(GL_TEXTURE_2D, whiteTexture);
+        }
+
+        obj->render();
+    }
+
+    if (chunkManager) {
+        auto chunks = chunkManager->getVisibleChunks();
+        shader->setUniform("model", Matrix4::identity());
+        shader->setUniform("objectColor", 1.0f, 1.0f, 1.0f);
+
+        glActiveTexture(GL_TEXTURE1);
+        if (!chunks.empty() && chunks[0]->getDiffuseTexture()) {
+            glBindTexture(GL_TEXTURE_2D, chunks[0]->getDiffuseTexture()->getId());
+        }
+        else {
+            glBindTexture(GL_TEXTURE_2D, whiteTexture);
+        }
+
+        for (const auto& chunk : chunks) {
+            chunk->draw();
+        }
+    }
+
+    skybox->render(camera);
+    if (debugEnabled) debugRenderDepthMap();
+}
+
+void Renderer::debugRenderDepthMap() const {
+    static Shader debugShader;
+    static bool debugLoaded = false;
+    static unsigned int quadVAO;
+    static unsigned int quadVBO;
+
+    if (!debugLoaded) {
+        const char* vertSrc = R"(
+        #version 330 core
+        layout (location = 0) in vec2 aPos;
+        out vec2 TexCoords;
+        void main() {
+            TexCoords = aPos * 0.5 + 0.5;
+            gl_Position = vec4(aPos, 0.0, 1.0);
+        }
+    )";
+        const char* fragSrc = R"(
+        #version 330 core
+        uniform sampler2D depthMap;
+        in vec2 TexCoords;
+        out vec4 FragColor;
+        void main() {
+            float depth = texture(depthMap, TexCoords).r;
+            FragColor = vec4(depth, depth, depth, 1.0);
+        }
+    )";
+        debugShader.loadFromSource(vertSrc, fragSrc);
+        debugLoaded = true;
+    }
+
+    if (quadVAO == 0) {
+        float quadVertices[] = { -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f };
+        glGenVertexArrays(1, &quadVAO);
+        glGenBuffers(1, &quadVBO);
+        glBindVertexArray(quadVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(0);
+        glBindVertexArray(0);
+    }
+
+    glViewport(0, 0, 200, 200);
+    glDisable(GL_DEPTH_TEST);
+
+    debugShader.use();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, shadowMap->getCascadeTexture(0));
+    glUniform1i(glGetUniformLocation(debugShader.getProgramID(), "depthMap"), 0);
+
+    glBindVertexArray(quadVAO);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glBindVertexArray(0);
+
+    glEnable(GL_DEPTH_TEST);
+    glViewport(0, 0, width, height);
+}
+
+void Renderer::setChunkManager(ChunkManager* chunkManage) {
+    chunkManager = chunkManage;
+    shadowMap->setChunkManager(chunkManage);
+}

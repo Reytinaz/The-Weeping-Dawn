@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Engine">
+      <UniqueIdentifier>{cc81a062-80cc-4795-88eb-d348f8d81b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Engine\Classes">
+      <UniqueIdentifier>{a6f79beb-d162-4525-89d6-ed5f65a9de5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Classes">
+      <UniqueIdentifier>{86bb5f0d-b7a7-4acb-897d-1248957ac79e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Engine\Core">
+      <UniqueIdentifier>{554060bb-790a-430f-8f37-89b99db82d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Core">
+      <UniqueIdentifier>{eb6697f5-6782-4faa-8a6d-9c5dd7eb9821}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\vertex.glsl">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="assets\shaders\fragment.glsl">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="source\include\glad.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\Button.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\Frame.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\Text.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\Object3D.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\Container.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\Character.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\engine.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\sceneManager.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\renderer.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\physics.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\shader.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\shadowMap.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\skybox.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\terrain.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\chunkManager.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\worldManager.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\InstanceUI.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\postProcessing.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\SourceLight.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\dimensionManager.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\Image.cpp">
+      <Filter>Исходные файлы\Engine\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\vector4.cpp">
+      <Filter>Исходные файлы\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\vector3.cpp">
+      <Filter>Исходные файлы\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\vector2.cpp">
+      <Filter>Исходные файлы\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\matrix4.cpp">
+      <Filter>Исходные файлы\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\texture.cpp">
+      <Filter>Исходные файлы\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\instances\instance.cpp">
+      <Filter>Исходные файлы\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\src\camera.cpp">
+      <Filter>Исходные файлы\Engine\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetArch.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\instances\Text.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\instances\Frame.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\instances\Button.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\instances\Container.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\instances\Object3D.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\instances\Character.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\shader.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\shadowMap.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\skybox.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\engine.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\physics.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\renderer.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\sceneManager.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\terrain.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\chunkManager.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\worldManager.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\InstanceUI.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\postProcessing.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\dimensionManager.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\SourceLight.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\Image.hpp">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\camera.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\instances\instance.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\matrix4.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\vector4.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\vector3.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\vector2.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\texture.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\material.hpp">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\biome.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
