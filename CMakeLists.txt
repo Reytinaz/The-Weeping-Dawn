@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ── SFML (ищется в системе) ──
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
 
+
 # ── OpenGL ──
 find_package(OpenGL REQUIRED)
 
