@@ -17,7 +17,6 @@ file(GLOB_RECURSE ENGINE_SRC
 )
 list(APPEND ENGINE_SRC "main.cpp")
 list(APPEND ENGINE_SRC "${GLAD_SRC}")
-set_source_files_properties(source/include/glad.c PROPERTIES LANGUAGE C)
 add_executable(${PROJECT_NAME} ${ENGINE_SRC})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
