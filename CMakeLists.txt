@@ -17,7 +17,7 @@ file(GLOB_RECURSE ENGINE_SRC
 )
 list(APPEND ENGINE_SRC "main.cpp")
 list(APPEND ENGINE_SRC "${GLAD_SRC}")
-add_executable(${PROJECT_NAME} ${ENGINE_SRC})
+set_source_files_properties(source/include/glad.c PROPERTIES LANGUAGE C)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     source/engine/include
@@ -33,6 +33,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     SFML::System
     OpenGL::GL
 )
+
 
 if(WIN32)
     target_link_libraries(${PROJECT_NAME} PRIVATE comctl32)
@@ -56,3 +57,5 @@ else()
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
     )
 endif()
+
+add_executable(${PROJECT_NAME} ${ENGINE_SRC})

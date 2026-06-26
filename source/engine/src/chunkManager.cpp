@@ -2,6 +2,7 @@
 #include "chunkManager.hpp"
 #include "engine.hpp"
 #include "dimensionManager.hpp"
+#include "cfloat"
 
 ChunkManager::ChunkManager(int chunkSize, float gridSpacing, float heightScale, float viewDistance)
     : chunkSize(chunkSize), gridSpacing(gridSpacing), heightScale(heightScale),
