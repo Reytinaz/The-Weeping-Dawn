@@ -1,7 +1,7 @@
 #ifndef CONTAINER_HPP
 #define CONTAINER_HPP
 
-#include "Instance.hpp"
+#include "instance.hpp"
 
 class Container : public Instance {
 public:
