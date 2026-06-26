@@ -1,7 +1,7 @@
 #ifndef UI_INSTANCE_HPP
 #define UI_INSTANCE_HPP
 
-#include "Instance.hpp"
+#include "instance.hpp"
 
 class InstanceUI : public Instance, public std::enable_shared_from_this<InstanceUI> {
 public:
