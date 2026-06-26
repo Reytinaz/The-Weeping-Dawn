@@ -360,7 +360,7 @@ void Skybox::render(std::shared_ptr<Camera> camera,
     skyboxShader.setUniform("sunGlowIntensity", thisDim->sunGlowIntensity);
     skyboxShader.setUniform("cloudsEnabled", thisDim->hasClouds);
     if (thisDim->hasClouds) {
-        glActiveTexture(GL_TEXTURE5); // свободный юнит (убедитесь, что не занят)
+        glActiveTexture(GL_TEXTURE5);
         glBindTexture(GL_TEXTURE_3D, noise3DTexture);
         skyboxShader.setUniform("noiseTexture", 5);
         skyboxShader.setUniform("cloudWindX", thisDim->cloudsWind.x);

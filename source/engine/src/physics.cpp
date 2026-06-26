@@ -244,9 +244,9 @@ static void resolveContact(Contact& contact, float dt) {
 
     Vector3 n = contact.normal;
 
-    const float slop = 0.01f;           // допуск проникновения
-    const float percent = 0.1f;          // доля коррекции за итерацию
-    const float maxCorrection = 0.1f;    // максимум смещения
+    const float slop = 0.01f; 
+    const float percent = 0.1f;
+    const float maxCorrection = 0.1f;
     float depth = contact.penetration - slop;
     if (depth > 0) {
         float correctionAmount = std::min(depth * percent, maxCorrection);

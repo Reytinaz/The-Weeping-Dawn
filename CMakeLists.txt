@@ -8,23 +8,17 @@ if(NOT EXISTS "${GLAD_SRC}")
     message(FATAL_ERROR "glad.c not found at ${GLAD_SRC}. Please download GLAD and place the file there.")
 endif()
 
-# ── SFML (ищется в системе) ──
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
-
-# ── OpenGL ──
 find_package(OpenGL REQUIRED)
 
-# ── Исходные файлы ──
 file(GLOB_RECURSE ENGINE_SRC
     "source/engine/src/*.cpp"
     "source/engine/instances/*.cpp"
 )
-list(APPEND ENGINE_SRC "source/include/glad.c")
 list(APPEND ENGINE_SRC "main.cpp")
 list(APPEND ENGINE_SRC "${GLAD_SRC}")
 add_executable(${PROJECT_NAME} ${ENGINE_SRC})
 
-# ── Заголовки ──
 target_include_directories(${PROJECT_NAME} PRIVATE
     source/engine/include
     source/engine/instances
@@ -32,7 +26,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${SFML_INCLUDE_DIR}
     ${OPENGL_INCLUDE_DIR}
 )
-# ── Линковка ──
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SFML::Graphics
     SFML::Window
@@ -40,9 +34,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenGL::GL
 )
 
-# ── Платформенно‑специфичные настройки ──
 if(WIN32)
-    # Windows: дополнительно линкуем comctl32 и копируем ресурсы
     target_link_libraries(${PROJECT_NAME} PRIVATE comctl32)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -50,15 +42,12 @@ if(WIN32)
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
     )
 elseif(APPLE)
-    # macOS: копируем ресурсы внутрь .app бандла (если нужно)
-    # Для простоты можно тоже скопировать assets в папку сборки
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
     )
 else()
-    # Linux: линкуем X11 и pthread, копируем assets
     find_package(X11 REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} pthread)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

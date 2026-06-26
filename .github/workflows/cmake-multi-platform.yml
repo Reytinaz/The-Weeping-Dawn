@@ -47,7 +47,7 @@ jobs:
               break
             } catch {
               Write-Host "Attempt $($i+1) failed: $_"
-              Start-Sleep -Seconds 5
+              Start-Sleep -Seconds 2
             }
           }
           if ($downloaded) { break }
@@ -82,11 +82,18 @@ jobs:
     - name: Download SFML (Linux)
       if: runner.os == 'Linux' && steps.cache-sfml-linux.outputs.cache-hit != 'true'
       run: |
-        for i in 1 2 3; do
-          wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz && break
-          echo "Attempt $i failed, retrying in 5s..."
-          sleep 5
+        set +e
+        for url in \
+          "https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz" \
+          "https://github.com/SFML/SFML/releases/download/3.1.0/SFML-3.1.0-linux-gcc-64-bit.tar.gz"
+        do
+          for i in 1 2 3; do
+            wget -q "$url" && break 2
+            echo "Attempt $i failed, retrying..."
+            sleep 2
+          done
         done
+        set -e
         mkdir -p ${{ github.workspace }}/sfml
         tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
 

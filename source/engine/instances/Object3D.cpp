@@ -145,7 +145,7 @@ void Object3D::getWorldBounds(Vector3& worldMin, Vector3& worldMax) const {
         worldMax = position;
         return;
     }
-    // Предполагаем, что minBound и maxBound уже вычислены (например, в loadOBJ)
+
     Vector3 corners[8] = {
         Vector3(minBound.x, minBound.y, minBound.z),
         Vector3(maxBound.x, minBound.y, minBound.z),
@@ -692,15 +692,12 @@ void Object3D::setupBuffers(bool ignore) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-    // Атрибут 0: позиция
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, px));
     glEnableVertexAttribArray(0);
 
-    // Атрибут 1: нормаль
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, nx));
     glEnableVertexAttribArray(1);
 
-    // Атрибут 2: текстурные координаты
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tu));
     glEnableVertexAttribArray(2);
 

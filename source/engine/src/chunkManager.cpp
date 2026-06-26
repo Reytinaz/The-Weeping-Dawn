@@ -1,6 +1,6 @@
 ﻿#include "targetArch.hpp"
 #include "chunkManager.hpp"
-#include "Engine.hpp"
+#include "engine.hpp"
 #include "dimensionManager.hpp"
 
 ChunkManager::ChunkManager(int chunkSize, float gridSpacing, float heightScale, float viewDistance)

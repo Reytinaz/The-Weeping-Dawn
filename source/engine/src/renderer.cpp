@@ -657,7 +657,6 @@ void Renderer::renderLightMask(const SourceLight& light, unsigned int fbo) {
         return;
     }
 
-    // Статические переменные внутри метода
     static Shader maskShader;
     static unsigned int maskVao = 0, maskVbo = 0;
     static bool maskInit = false;

@@ -1,3 +1,4 @@
+#define GLAD_GL_IMPLEMENTATION
 #include "targetArch.hpp"
 #include "engine.hpp"
 
@@ -289,9 +290,9 @@ int main() {
 	centre->position = Vector3(0, 0, 0);
 	centre->scale = Vector3(1, 1, 1);
 	centre->isStatic = true;
-	centre->color[0] = 1.f;
-	centre->color[1] = 1.f;
-	centre->color[2] = 1.f;
+	centre->color[0] = 1.0f;
+	centre->color[1] = 1.0f;
+	centre->color[2] = 1.0f;
 	engine.pushObj3D(centre);
 
 	std::cout << "=== Engine Was Initialized ===" << std::endl;
