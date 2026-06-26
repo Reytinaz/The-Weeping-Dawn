@@ -34,10 +34,16 @@ jobs:
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip -OutFile sfml.zip
-        Expand-Archive sfml.zip -DestinationPath $env:TEMP\sfml_temp
-        $inner = Get-ChildItem -Path $env:TEMP\sfml_temp -Directory | Select-Object -First 1
-        Move-Item -Path "$($inner.FullName)\*" -Destination ${{ github.workspace }}\sfml -Force
-        Remove-Item -Recurse -Force $env:TEMP\sfml_temp
+        Expand-Archive sfml.zip -DestinationPath $env:TEMP\sfml_extracted -Force
+        $inner = Get-ChildItem -Path $env:TEMP\sfml_extracted -Directory | Select-Object -First 1
+        New-Item -ItemType Directory -Force -Path ${{ github.workspace }}\sfml
+        Copy-Item -Path "$($inner.FullName)\*" -Destination ${{ github.workspace }}\sfml -Recurse -Force
+        Remove-Item -Recurse -Force $env:TEMP\sfml_extracted
+        Remove-Item -Force sfml.zip
+        if (-Not (Test-Path "${{ github.workspace }}\sfml\lib\cmake\SFML\SFMLConfig.cmake")) {
+          Write-Error "SFMLConfig.cmake not found after extraction!"
+          exit 1
+        }
 
     # ─── Установка SFML 3.1.0 (Linux) ───────────────────────────
     - name: Install Linux dependencies
@@ -84,88 +90,6 @@ jobs:
           build/${{ matrix.build_type }}/*.dll
           assets/
 
-    - name: Upload artifacts (Linux)
-      if: runner.os == 'Linux'
-      uses: actions/upload-artifact@v4
-      with:
-        name: TheWeepingDawn-Linux
-        path: |
-          build/TheWeepingDawn
-          assets/name: CMake multi-platform build
-
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-latest]   # можно добавить macos-latest
-        build_type: [Release]
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    # ─── Установка SFML 3.1.0 ─────────────────────────────────
-    - name: Cache SFML (Windows)
-      if: runner.os == 'Windows'
-      id: cache-sfml-win
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/sfml
-        key: sfml-3.1.0-windows-vc17
-    - name: Download SFML 3.1.0 (Windows)
-      if: runner.os == 'Windows' && steps.cache-sfml-win.outputs.cache-hit != 'true'
-      run: |
-        Invoke-WebRequest -Uri https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip -OutFile sfml.zip
-        Expand-Archive sfml.zip -DestinationPath ${{ github.workspace }}/sfml
-    - name: Install Linux dependencies
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libx11-dev libxrandr-dev libudev-dev libgl1-mesa-dev \
-                                libfreetype6-dev libflac-dev libogg-dev libvorbis-dev libopenal-dev
-    - name: Cache SFML (Linux)
-      if: runner.os == 'Linux'
-      id: cache-sfml-linux
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/sfml
-        key: sfml-3.1.0-linux-gcc-64
-    - name: Download SFML 3.1.0 (Linux)
-      if: runner.os == 'Linux' && steps.cache-sfml-linux.outputs.cache-hit != 'true'
-      run: |
-        wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz
-        mkdir -p tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
-
-    # ─── Настройка CMake и сборка ─────────────────────────────
-    - name: Configure CMake
-      run: |
-        cmake -B build \
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-          -DSFML_DIR=${{ github.workspace }}/sfml/lib/cmake/SFML
-      shell: bash
-
-    - name: Build
-      run: cmake --build build --config ${{ matrix.build_type }}
-
-    # ─── (Опционально) Упаковка артефактов ────────────────────
-    - name: Upload artifacts (Windows)
-      if: runner.os == 'Windows'
-      uses: actions/upload-artifact@v4
-      with:
-        name: TheWeepingDawn-Windows
-        path: |
-          build/${{ matrix.build_type }}/TheWeepingDawn.exe
-          build/${{ matrix.build_type }}/*.dll
-          assets/
     - name: Upload artifacts (Linux)
       if: runner.os == 'Linux'
       uses: actions/upload-artifact@v4
