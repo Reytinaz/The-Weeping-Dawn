@@ -2,7 +2,7 @@
 #define SOURCE_LIGHT_HPP
 
 #include "vector3.hpp"
-#include "Instance.hpp"
+#include "instance.hpp"
 
 enum LightType {
     DIRECTIONAL_LIGHT,
