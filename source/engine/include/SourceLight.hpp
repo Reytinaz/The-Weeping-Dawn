@@ -16,20 +16,13 @@ public:
     Vector3 position;
     Vector3 direction;
     Vector3 color;
-    float intensity;
-    float constant;
-    float linear;
-    float quadratic;
-    float cutOff;
-    float outerCutOff;
+    float intensity = 1.0f;
+    float constant = 1.0f;   // обычно 1.0
+    float linear = 0.09f;  // подбирается под размер сцены
+    float quadratic = 0.032f;
+    float cutOff = 12.5f;   // градусы, внутренний конус
+    float outerCutOff = 17.5f;   // градусы, внешний конус
     bool enabled = false;
-
-    bool enableGodRays = false;
-    float rayExposure = 0.3f;
-    float rayDecay = 0.97f;
-    float rayDensity = 0.9f;
-    float rayWeight = 0.1f;
-    float raySize = 0.05f;
 
     SourceLight(const std::string& name);
 };

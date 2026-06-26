@@ -21,7 +21,6 @@ bool ShadowMap::init() {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24,
             resolution, resolution, 0,
             GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-        // Use nearest filtering for depth maps (stable comparisons)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -106,11 +105,8 @@ Matrix4 ShadowMap::calculateLightMatrix(const Camera& camera,
     }
     center = center * (1.0f / 8.0f);
 
-    // lightDir is provided as direction of rays (from sun towards scene).
-    // We need vector pointing from scene center to the light (toLight).
     Vector3 toLight = -lightDir.normalized();
     float distance = (camera.farPlane - camera.nearPlane) * 10.0f;
-    // Place the light "camera" at center + toLight * distance (towards the light)
     Vector3 lightEye = center + toLight * distance;
 
     Vector3 worldUp = Vector3(0, 1, 0);
@@ -159,12 +155,9 @@ Matrix4 ShadowMap::calculateLightMatrix(const Camera& camera,
     minZ -= zRange * 0.5f;
     maxZ += zRange * 0.5f;
 
-    // Stabilize shadow cascades by snapping the ortho projection to the shadow map texel grid
-    // This reduces shimmering when the camera moves.
     float worldUnitsPerTexelX = (maxX - minX) / (float)resolution;
     float worldUnitsPerTexelY = (maxY - minY) / (float)resolution;
     if (worldUnitsPerTexelX > 0.0f && worldUnitsPerTexelY > 0.0f) {
-        // snap center to texel increments
         float centerX = (minX + maxX) * 0.5f;
         float centerY = (minY + maxY) * 0.5f;
         float snapX = floor(centerX / worldUnitsPerTexelX) * worldUnitsPerTexelX;

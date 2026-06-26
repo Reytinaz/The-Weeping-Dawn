@@ -25,17 +25,14 @@ enum class CharacterInput{
 
 class Character : public Object3D {
 private:
-    // Состояние
     CharacterState m_state;
 
-    // Размеры персонажа (в зависимости от состояния)
     struct {
         Vector3 standing = Vector3(0.5f, 1.0f, 0.5f);
         Vector3 crouching = Vector3(0.5f, 0.5f, 0.5f);
         Vector3 current = Vector3(0.5f, 1.0f, 0.5f);
     } m_size;
 
-    // Ввод
     struct {
         bool forward = false;
         bool backward = false;
@@ -46,14 +43,12 @@ private:
         bool crouch = false;
     } m_input;
 
-    // Оффсеты камеры
     struct {
-        Vector3 firstPerson = Vector3(0, 0.5f, 0);    // На уровне глаз
-        Vector3 thirdPerson = Vector3(0, 2.0f, -5.0f); // Сзади сверху
+        Vector3 firstPerson = Vector3(0, 0.75f, 0);
+        Vector3 thirdPerson = Vector3(0, 2.0f, -5.0f);
         Vector3 current = Vector3(0, 0.5f, 0);
     } m_cameraOffset;
 
-    // Коллбэки для событий
     std::function<void()> onLandCallback;
     std::function<void()> onJumpCallback;
     std::function<void(CharacterState)> onStateChangeCallback;
@@ -71,7 +66,6 @@ public:
     Physics* physics;
     ChunkManager* chunkManager;
 
-    // Параметры персонажа
     struct {
         Vector3 velocity;
         Vector3 targetVelocity;
@@ -99,7 +93,6 @@ public:
     bool checkGrounded() const;
     Vector3 getVelocity() const { return m_movement.velocity; }
 
-    // Физика
     void applyForce(const Vector3& force);
     void jump();
     void crouch();

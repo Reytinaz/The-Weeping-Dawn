@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4a5ace8374b05317eaf0be9f172f17c2\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{7FA8F991-E5B7-3F23-8DC2-79B16C1CE489}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

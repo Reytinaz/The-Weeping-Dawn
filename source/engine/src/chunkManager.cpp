@@ -4,15 +4,15 @@
 #include "dimensionManager.hpp"
 
 ChunkManager::ChunkManager(int chunkSize, float gridSpacing, float heightScale, float viewDistance)
-    : m_chunkSize(chunkSize), m_gridSpacing(gridSpacing), m_heightScale(heightScale),
-    m_viewDistance(static_cast<int>(viewDistance * 125)), noise(nullptr), seed(0), engine(nullptr)
+    : chunkSize(chunkSize), gridSpacing(gridSpacing), heightScale(heightScale),
+    viewDistance(static_cast<int>(viewDistance * 125)), noise(nullptr), seed(0), engine(nullptr)
 {
 }
 
 void ChunkManager::setNoiseParams(float baseFreq, int octaves, float persistence) {
-    m_baseFreq = baseFreq;
-    m_octaves = octaves;
-    m_persistence = persistence;
+    this->baseFreq = baseFreq;
+    this->octaves = octaves;
+    this->persistence = persistence;
 }
 
 void ChunkManager::clear() const {
@@ -21,11 +21,9 @@ void ChunkManager::clear() const {
 
 void ChunkManager::update(const Vector3& cameraPos, float viewDistance) {
     if (!noise || !engine) return;
-
-    // Ensure merged material cache exists to avoid rebuilding it per-chunk
     if (thisDim) thisDim->ensureMergedMaterialCache();
 
-    float chunkWorldSize = (m_chunkSize - 1) * m_gridSpacing;
+    float chunkWorldSize = (chunkSize - 1) * gridSpacing;
     int viewDistChunks = static_cast<int>(std::ceil(viewDistance * 125 / chunkWorldSize));
 
     int camChunkX = static_cast<int>(std::floor(cameraPos.x / chunkWorldSize));
@@ -41,7 +39,9 @@ void ChunkManager::update(const Vector3& cameraPos, float viewDistance) {
     for (auto it = thisDim->chunks.begin(); it != thisDim->chunks.end(); ) {
         if (requiredIDs.find(it->first) == requiredIDs.end()) {
             for (auto& obj : it->second->objects) {
-                engine->currentDimension->physics->removeObject(obj);
+                if (auto obj3d = std::dynamic_pointer_cast<Object3D>(obj)) {
+                    engine->currentDimension->physics->removeObject(obj3d);
+                }
                 engine->scene.workspace->removeChild(obj);
             }
             it->second->objects.clear();
@@ -67,8 +67,8 @@ void ChunkManager::update(const Vector3& cameraPos, float viewDistance) {
             auto loadedChunk = engine.worldManagment.loadChunk(engine.currentWorldPath, thisDim->name, noise, gridX, gridZ, thisDim->noiseParams, *this);
             if (loadedChunk) {
                 std::lock_guard<std::mutex> lock(queueMutex);
-                float chunkCenterX = (gridX + 0.5f) * (m_chunkSize - 1) * m_gridSpacing;
-                float chunkCenterZ = (gridZ + 0.5f) * (m_chunkSize - 1) * m_gridSpacing;
+                float chunkCenterX = (gridX + 0.5f) * (chunkSize - 1) * gridSpacing;
+                float chunkCenterZ = (gridZ + 0.5f) * (chunkSize - 1) * gridSpacing;
                 auto biome = thisDim->getBiomeAt(chunkCenterX, chunkCenterZ, noise);
                 loadedChunk->setDimension(thisDim);
                 loadedChunk->setBiome(biome);
@@ -80,17 +80,32 @@ void ChunkManager::update(const Vector3& cameraPos, float viewDistance) {
                     }
                 }
                 loadedChunk->generateMaterials(noise, 0.2f);
-                loadedChunk->generateStructures(seed);
+                loadedChunk->clearStructures();
+                auto objs = engine.worldManagment.getChunkObjetcs(engine.currentWorldPath, thisDim->name, loadedChunk);
+                for (auto& e : *objs) {
+                    if (auto obj3d = std::dynamic_pointer_cast<Object3D>(e)) {
+                        auto obj = engine.scene.workspace->addChild<Object3D>(obj3d->name, obj3d->type);
+                        obj->modelPath = obj3d->modelPath;
+                        obj->scale = obj3d->scale;
+                        obj->position = obj3d->position;
+                        obj->rotation = obj3d->rotation;
+                        obj->isStatic = obj3d->isStatic;
+                        obj->color[0] = obj3d->color[0]; obj->color[1] = obj3d->color[1]; obj->color[2] = obj3d->color[2];
+                        obj->modelScale = obj3d->modelScale;
+                        loadedChunk->objects.push_back(obj);
+                    } else loadedChunk->objects.push_back(e);;
+                }
                 readyChunks.push(loadedChunk);
+                delete objs;
                 return;
             }
 
-            auto chunk = std::make_shared<Terrain>(gridX, gridZ, m_chunkSize, m_chunkSize, m_gridSpacing, m_heightScale);
+            auto chunk = std::make_shared<Terrain>(gridX, gridZ, chunkSize, chunkSize, gridSpacing, heightScale);
             chunk->noise = noise;
             chunk->setDimension(thisDim);
 
-            float chunkCenterX = (gridX + 0.5f) * (m_chunkSize - 1) * m_gridSpacing;
-            float chunkCenterZ = (gridZ + 0.5f) * (m_chunkSize - 1) * m_gridSpacing;
+            float chunkCenterX = (gridX + 0.5f) * (chunkSize - 1) * gridSpacing;
+            float chunkCenterZ = (gridZ + 0.5f) * (chunkSize - 1) * gridSpacing;
             auto biome = thisDim->getBiomeAt(chunkCenterX, chunkCenterZ, noise);
 
             chunk->setBiome(biome);
@@ -103,9 +118,10 @@ void ChunkManager::update(const Vector3& cameraPos, float viewDistance) {
             }
 
             chunk->generateMaterials(noise, 0.2f);
-            chunk->generateStructures(seed);
+            chunk->generateStructures(seed, engine);
             std::lock_guard<std::mutex> lock(queueMutex);
             readyChunks.push(chunk);
+            engine.worldManagment.saveChunk(engine.currentWorldPath, thisDim->name, chunk);
         });
     }
 
@@ -130,28 +146,38 @@ void ChunkManager::update(const Vector3& cameraPos, float viewDistance) {
                 else chunk->setDiffuseTexture(chunk->getTexturePath());
             }
 
-            for (auto& structure : chunk->structures) {
-                auto templateObj = engine->getModel(structure->modelPath);
-                if (!templateObj) {
-                    std::cerr << "Failed to load model: " << structure->modelPath << std::endl;
-                    continue;
+            for (auto& structure : chunk->objects) {
+                if (auto obj3d = std::dynamic_pointer_cast<Object3D>(structure)) {
+                    if (obj3d->type == ObjectType::CUSTOM) {
+                        auto templateObj = engine->getModel(obj3d->modelPath);
+                        if (!templateObj) {
+                            std::cerr << "Failed to load model: " << obj3d->modelPath << "(" << obj3d->name << ")" << std::endl;
+                            continue;
+                        }
+                        obj3d->vertices = templateObj->vertices;
+                        obj3d->normals = templateObj->normals;
+                        obj3d->texCoords = templateObj->texCoords;
+                        obj3d->indices = templateObj->indices;
+                        obj3d->diffuseTexture = templateObj->diffuseTexture;
+                        obj3d->normalTexture = templateObj->normalTexture;
+                        obj3d->diffuseTexturePath = templateObj->diffuseTexturePath;
+                        obj3d->normalTexturePath = templateObj->normalTexturePath;
+                    }
+                    engine->pushObj3D(obj3d);
                 }
-                auto obj = engine->scene.workspace->addChild<Object3D>(structure->structName, ObjectType::CUSTOM);
-                obj->vertices = templateObj->vertices;
-                obj->normals = templateObj->normals;
-                obj->texCoords = templateObj->texCoords;
-                obj->indices = templateObj->indices;
-                obj->diffuseTexture = templateObj->diffuseTexture;
-
-                obj->scale = structure->scale;
-                obj->position = structure->position;
-                obj->rotation = structure->rotation;
-                obj->isStatic = structure->isStatic;
-                obj->color[0] = 1.0f; obj->color[1] = 1.0f; obj->color[2] = 1.0f;
-                obj->modelScale = structure->modelScale;
-
-                engine->pushObj3D(obj);
-                chunk->objects.push_back(obj);
+                if (auto srcLight = std::dynamic_pointer_cast<SourceLight>(structure)) {
+                    auto light = engine->scene.workspace->addChild<SourceLight>(srcLight->name);
+                    light->type = srcLight->type;
+                    light->position = srcLight->position;
+                    light->direction = srcLight->direction;
+                    light->color = srcLight->color;
+                    light->constant = srcLight->constant;
+                    light->linear = srcLight->linear;
+                    light->intensity = srcLight->intensity;
+                    light->quadratic = srcLight->quadratic;
+                    light->cutOff = srcLight->cutOff;
+                    light->outerCutOff = srcLight->outerCutOff;
+                }
             }
 
             thisDim->chunks[chunk->id] = chunk;
@@ -159,8 +185,6 @@ void ChunkManager::update(const Vector3& cameraPos, float viewDistance) {
                 std::lock_guard<std::mutex> lock(queueMutex);
                 pendingIDs.erase(chunk->id);
             }
-            engine->worldManagment.saveChunk(engine->currentWorldPath, thisDim->name, chunk);
-
             processedThisFrame++;
         }
         else {
@@ -184,6 +208,18 @@ std::vector<std::shared_ptr<Terrain>> ChunkManager::getVisibleChunks() const {
         result.push_back(pair.second);
     }
     return result;
+}
+
+std::shared_ptr<Terrain> ChunkManager::getChunkAt(float worldX, float worldZ) {
+    float chunkWorldSize = (chunkSize - 1) * gridSpacing;
+    int gridX = static_cast<int>(std::floor(worldX / chunkWorldSize));
+    int gridZ = static_cast<int>(std::floor(worldZ / chunkWorldSize));
+    int64_t id = makeID(gridX, gridZ);
+
+    auto it = thisDim->chunks.find(id);
+    if (it != thisDim->chunks.end())
+        return it->second;
+    return nullptr;
 }
 
 float ChunkManager::getHeightAt(float worldX, float worldZ) const {

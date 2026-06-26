@@ -9,7 +9,7 @@
 #include "vector4.hpp"
 #include "SourceLight.hpp"
 
-#define MAX_LIGHTS 8
+#define MAX_LIGHTS 64
 #define MAX_CASCADES 3
 
 struct Cascade {

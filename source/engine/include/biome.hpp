@@ -1,19 +1,19 @@
 #ifndef BIOME_HPP
 #define BIOME_HPP
 
-#include <string>
-#include <memory>
-#include <vector>
+#include "string"
+#include "memory"
+#include "vector"
 #include "material.hpp"
 
 struct BiomeNoiseParams {
-    float baseFreq;      // базова€ частота (0.01 - очень плавно, 0.02 - равнины, 0.05 - холмы)
-    int octaves;         // количество октав (3-4 дл€ м€гких форм, 5-6 дл€ деталей)
-    float persistence;   // персистенци€ (0.3 - гладко, 0.5 - средне)
-    float amplitude;     // амплитуда (высота)
+    float baseFreq = 0.02f;      // базова€ частота (0.01 - очень плавно, 0.02 - равнины, 0.05 - холмы)
+    int octaves = 4;         // количество октав (3-4 дл€ м€гких форм, 5-6 дл€ деталей)
+    float persistence = 0.4f;   // персистенци€ (0.3 - гладко, 0.5 - средне)
+    float amplitude = 10.0f;     // амплитуда (высота)
 
-    float minHeight;
-    float maxHeight;
+    float minHeight = 0.0f;
+    float maxHeight = 2.0f;
 
     float roughness = 0.65f;      // шероховатость (0.3 - очень гладко, 1.0 - остро)
     float redistribution = 1.0f;  // перераспределение высот (>1 - сглаживает низины, <1 - сглаживает пики)
@@ -28,6 +28,7 @@ struct BiomeNoiseParams {
 };
 
 struct BiomeStructure {
+    std::string name;
     std::string modelPath;
     float density;
     float minHeight;
@@ -36,6 +37,7 @@ struct BiomeStructure {
     float maxSlope;
     Vector3 scale;
     Vector3 modelScale;
+    Vector3 positionOffset;
     float probability;
     float spacing;
 };
@@ -83,6 +85,7 @@ namespace BiomePresets {
         biome->materialSet = materialSet;
 
         BiomeStructure tree;
+        tree.name = "medium_tree";
         tree.modelPath = "assets/models/tree.obj";
         tree.density = 0.5f;
         tree.minHeight = -15.0f;
@@ -91,9 +94,25 @@ namespace BiomePresets {
         tree.maxSlope = 15.0f;
         tree.scale = Vector3(1.5f, 5.0f, 1.5f);
         tree.modelScale = Vector3(3.5f, 1.0f, 3.5f);
-        tree.probability = 0.3f;
+        tree.positionOffset = Vector3(0, 0, 0);
+        tree.probability = 0.28f;
         tree.spacing = 6.0f;
         biome->addStructure(tree);
+
+        BiomeStructure rock;
+        rock.name = "medium_rock";
+        rock.modelPath = "assets/models/rock.obj";
+        rock.density = 0.5f;
+        rock.minHeight = -20.0f;
+        rock.maxHeight = 40.0f;
+        rock.minSlope = 0.0f;
+        rock.maxSlope = 10.0f;
+        rock.scale = Vector3(2.5f, 0.8f, 2.5f);
+        rock.modelScale = Vector3(1.1f, 3.0f, 1.1f);
+        tree.positionOffset = Vector3(0, -0.75f, 0);
+        rock.probability = 0.2f;
+        rock.spacing = 9.0f;
+        biome->addStructure(rock);
 
         return biome;
     }
@@ -118,19 +137,6 @@ namespace BiomePresets {
         materialSet->createMaterial("snow", 10.0f, 50.0f, "assets/images/terrain/snow.jpg", 0.3f, 0.3f, 10.0f);
 
         biome->materialSet = materialSet;
-
-        BiomeStructure rock;
-        rock.modelPath = "assets/models/rock.obj";
-        rock.density = 0.5f;
-        rock.minHeight = 0.0f;
-        rock.maxHeight = 60.0f;
-        rock.minSlope = 20.0f;
-        rock.maxSlope = 60.0f;
-        rock.scale = Vector3(1.0f, 1.0f, 1.0f);
-        rock.modelScale = Vector3(3.0f, 1.25f, 3.0f);
-        rock.probability = 0.25f;
-        rock.spacing = 5.0f;
-        biome->addStructure(rock);
 
         return biome;
     }

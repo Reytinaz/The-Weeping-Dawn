@@ -1,6 +1,7 @@
 ﻿#include "terrain.hpp"
 #include "dimensionManager.hpp"
 #include "biome.hpp"
+#include "engine.hpp"
 #include "glad.h"
 
 PerlinNoise::PerlinNoise(unsigned int seed) {
@@ -68,77 +69,10 @@ float PerlinNoise::clampedNoise(float x, float y, float low, float high) const {
     n = (n + 1.0f) * 0.5f;
     return low + n * (high - low);
 }
-/*
-void Terrain::generateStructures(unsigned int seed) {
-    clearStructures();
-
-    std::mt19937 rng(seed ^ (gridX * 73856093) ^ (gridZ * 19349663));
-    std::uniform_real_distribution<float> dist01(0.0f, 1.0f);
-
-    float spacing = 8.0f;
-    int stepsX = static_cast<int>((m_width - 1) * m_gridSpacing / spacing);
-    int stepsZ = static_cast<int>((m_depth - 1) * m_gridSpacing / spacing);
-
-    for (int iz = 0; iz < stepsZ; ++iz) {
-        for (int ix = 0; ix < stepsX; ++ix) {
-            float localX = (ix + 0.5f) * spacing;
-            float localZ = (iz + 0.5f) * spacing;
-
-            if (localX > (m_width - 1) * m_gridSpacing) continue;
-            if (localZ > (m_depth - 1) * m_gridSpacing) continue;
-
-            float worldX = m_originX + localX;
-            float worldZ = m_originZ + localZ;
-            float height = getHeightAt(worldX, worldZ);
-
-            float prob = 0.4f;
-            float noiseVal = noise->noise(worldX * 0.1f, worldZ * 0.1f) * 0.5f + 0.5f;
-            prob *= noiseVal;
-
-            if (dist01(rng) < prob) {
-                int type = static_cast<int>(dist01(rng) * 3);
-                std::string modelPath;
-                std::string name;
-                Vector3 scale(1, 1, 1);
-                Vector3 modelScale(1, 1, 1);
-                if (type == 0) {
-                    modelPath = "assets/models/tree1.obj";
-                    scale = Vector3(2, 2, 2);
-                }
-                else if (type == 1) {
-                    modelPath = "assets/models/tree2.obj";
-                    scale = Vector3(1.5, 1.5, 1.5);
-                }
-                else {
-                    modelPath = "assets/models/rock.obj";
-                    scale = Vector3(1, 1, 1);
-                }
-
-                modelPath = "assets/models/tree.obj";
-                name = "Tree";
-                scale = Vector3(1.5, 5, 1.5);
-                modelScale = Vector3(3.5, 1, 3.5);
-
-                auto obj = std::make_shared<Structure>();
-                obj->position = Vector3(worldX, height + scale.y / 2, worldZ);
-                obj->scale = scale;
-                obj->modelScale = modelScale;
-                obj->rotation.y = dist01(rng) * 2 * 3.14159f;
-                obj->isStatic = true;
-                obj->type = 1;
-                obj->modelPath = modelPath;
-                obj->structName = name;
-
-                structures.push_back(obj);
-            }
-        }
-    }
-}
-*/
 
 Terrain::Terrain(int gridX, int gridZ, int width, int depth, float gridSpacing, float heightScale)
     : m_width(width), m_depth(depth), m_gridSpacing(gridSpacing), m_heightScale(heightScale),
-    m_VAO(0), m_VBO(0), m_EBO(0), m_indexCount(0),
+    VAO(0), VBO(0), indexCount(0),
     gridX(gridX), gridZ(gridZ), m_materialSet(nullptr)
 {
     if (width < 2 || depth < 2) {
@@ -153,14 +87,12 @@ Terrain::Terrain(int gridX, int gridZ, int width, int depth, float gridSpacing, 
 }
 
 Terrain::~Terrain() {
-    glDeleteVertexArrays(1, &m_VAO);
-    glDeleteBuffers(1, &m_VBO);
-    glDeleteBuffers(1, &m_EBO);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 }
 
 float Terrain::calculateBiomeHeight(float worldX, float worldZ, std::shared_ptr<Biome> biome) const {
     if (!biome || !noise) return 0;
-
     const auto& params = biome->noiseParams;
 
     float nx = worldX * params.baseFreq;
@@ -216,14 +148,14 @@ void Terrain::smoothHeights(int iterations) {
                 int idx = z * m_width + x;
 
                 float sum = 0;
-                sum += m_heights[(z - 1) * m_width + x];     // верх
-                sum += m_heights[(z + 1) * m_width + x];     // низ
-                sum += m_heights[z * m_width + (x - 1)];     // лево
-                sum += m_heights[z * m_width + (x + 1)];     // право
-                sum += m_heights[(z - 1) * m_width + (x - 1)]; // верх-лево
-                sum += m_heights[(z - 1) * m_width + (x + 1)]; // верх-право
-                sum += m_heights[(z + 1) * m_width + (x - 1)]; // низ-лево
-                sum += m_heights[(z + 1) * m_width + (x + 1)]; // низ-право
+                sum += m_heights[(z - 1) * m_width + x];
+                sum += m_heights[(z + 1) * m_width + x];
+                sum += m_heights[z * m_width + (x - 1)];
+                sum += m_heights[z * m_width + (x + 1)];
+                sum += m_heights[(z - 1) * m_width + (x - 1)];
+                sum += m_heights[(z - 1) * m_width + (x + 1)];
+                sum += m_heights[(z + 1) * m_width + (x - 1)];
+                sum += m_heights[(z + 1) * m_width + (x + 1)];
 
                 float avg = sum / 8.0f;
 
@@ -379,7 +311,7 @@ void Terrain::computeNormalsWithNeighbors(std::shared_ptr<Terrain> leftNeighbor,
         }
 
         return 0;
-    };
+        };
 
     for (int z = 0; z < m_depth; ++z) {
         for (int x = 0; x < m_width; ++x) {
@@ -409,8 +341,21 @@ void Terrain::generateMaterials(std::shared_ptr<PerlinNoise> noise, float baseFr
     }
 
     if (!m_materialSet) {
-        if (m_biome && m_biome->materialSet) m_materialSet = m_biome->materialSet;
-        if (!m_materialSet) return;
+        if (m_biome && m_biome->materialSet)
+            m_materialSet = m_biome->materialSet;
+        if (!m_materialSet)
+            return;
+    }
+
+    static std::unordered_map<int, std::string> matToBiome;
+    if (matToBiome.empty() && dimension) {
+        for (const auto& [key, idx] : materialKeyToIndex) {
+            size_t pos = key.find('|');
+            if (pos != std::string::npos) {
+                std::string biomeName = key.substr(0, pos);
+                matToBiome[idx] = biomeName;
+            }
+        }
     }
 
     float worldOriginX = gridX * (m_width - 1) * m_gridSpacing;
@@ -422,162 +367,72 @@ void Terrain::generateMaterials(std::shared_ptr<PerlinNoise> noise, float baseFr
             float worldX = worldOriginX + x * m_gridSpacing;
             float worldZ = worldOriginZ + z * m_gridSpacing;
             float height = m_heights[idx];
-
             std::vector<BiomeBlend> biomes;
             if (dimension) {
-                biomes = dimension->getBiomesAt(worldX, worldZ, noise, 16.0f);
+                biomes = dimension->getBiomesAt(worldX, worldZ, noise, 12.0f);
             }
             else {
                 biomes.push_back({ m_biome, 1.0f });
             }
 
-            if (biomes.size() <= 1) {
-                std::shared_ptr<Biome> singleBiome = nullptr;
-                if (!biomes.empty()) singleBiome = biomes[0].biome;
-                if (!singleBiome) singleBiome = m_biome;
-
-                if (singleBiome && singleBiome->materialSet) {
-                    int localMatIdx = singleBiome->materialSet->getMaterialIndexAtHeight(height);
-                    if (localMatIdx >= 0 && localMatIdx < static_cast<int>(singleBiome->materialSet->materials.size())) {
-                        auto matPtr = singleBiome->materialSet->materials[localMatIdx];
-                        std::string key = singleBiome->name + "|" + matPtr->name + "|" + matPtr->texturePath;
-                        auto it = materialKeyToIndex.find(key);
-                        if (it != materialKeyToIndex.end()) {
-                            int mappedIdx = it->second;
-                            // store primary material for smoothing later
-                            // (we'll assign after smoothing pass)
-                            // Temporarily store in m_materialWeights as integer
-                            m_materialWeights[idx].matBL = static_cast<float>(mappedIdx);
-                            m_materialWeights[idx].matBR = static_cast<float>(mappedIdx);
-                            m_materialWeights[idx].matTL = static_cast<float>(mappedIdx);
-                            m_materialWeights[idx].matTR = static_cast<float>(mappedIdx);
-                            continue;
-                        }
-                    }
-                }
-
-                int matIdx = m_materialSet->getMaterialIndexAtHeight(height);
-                m_materialWeights[idx].matBL = static_cast<float>(matIdx);
-                m_materialWeights[idx].matBR = static_cast<float>(matIdx);
-                m_materialWeights[idx].matTL = static_cast<float>(matIdx);
-                m_materialWeights[idx].matTR = static_cast<float>(matIdx);
-                continue;
-            }
-
-            std::map<int, float> materialWeights;
-            float totalWeight = 0;
+            std::map<std::string, float> biomeWeights;
+            std::map<std::string, int> biomeMaterial;
+            float totalWeight = 0.0f;
 
             for (const auto& [biome, weight] : biomes) {
-                if (!biome || !biome->materialSet) continue;
+                if (!biome || !biome->materialSet)
+                    continue;
 
-                int matIdx = biome->materialSet->getMaterialIndexAtHeight(height);
-                if (matIdx < 0 || matIdx >= static_cast<int>(biome->materialSet->materials.size())) continue;
-                auto& matPtr = biome->materialSet->materials[matIdx];
+                int localMatIdx = biome->materialSet->getMaterialIndexAtHeight(height);
+                if (localMatIdx < 0 || localMatIdx >= (int)biome->materialSet->materials.size())
+                    continue;
+
+                auto& matPtr = biome->materialSet->materials[localMatIdx];
                 std::string key = biome->name + "|" + matPtr->name + "|" + matPtr->texturePath;
                 auto it = materialKeyToIndex.find(key);
-                if (it == materialKeyToIndex.end()) {
-                    auto copy = std::make_shared<Material>(*matPtr);
-                    m_materialSet->materials.push_back(copy);
-                    int newIdx = static_cast<int>(m_materialSet->materials.size() - 1);
-                    materialKeyToIndex[key] = newIdx;
-                    materialWeights[newIdx] += weight;
-                    if (dimension) {
-                        dimension->mergedMaterialIndexMap[key] = newIdx;
-                    }
-                }
-                else {
-                    materialWeights[it->second] += weight;
-                }
+                if (it == materialKeyToIndex.end())
+                    continue;
+
+                int globalIdx = it->second;
+                biomeWeights[biome->name] += weight;
+                biomeMaterial[biome->name] = globalIdx;
                 totalWeight += weight;
             }
 
-            if (totalWeight <= 0) continue;
-
-            std::vector<std::pair<int, float>> sortedWeights;
-            for (auto& [matIdx, w] : materialWeights) {
-                sortedWeights.push_back({ matIdx, w / totalWeight });
+            if (totalWeight <= 0.0f) {
+                m_materialWeights[idx].matBL = 0.0f;
+                m_materialWeights[idx].matBR = 0.0f;
+                m_materialWeights[idx].matTL = 0.0f;
+                m_materialWeights[idx].matTR = 0.0f;
+                continue;
             }
 
-            std::sort(sortedWeights.begin(), sortedWeights.end(),
-                [](const auto& a, const auto& b) { return a.second > b.second; });
+            for (auto& [name, w] : biomeWeights)
+                w /= totalWeight;
 
-            int mainMat = sortedWeights[0].first;
-            int secondMat = mainMat;
-            float blendWeight = 0.0f;
+            int plainsMat = -1, mountainsMat = -1;
+            float plainsWeight = 0.0f, mountainsWeight = 0.0f;
 
-            if (sortedWeights.size() > 1) {
-                secondMat = sortedWeights[1].first;
-                blendWeight = sortedWeights[1].second;
-
-                const float blendThreshold = 0.05f;
-                if (blendWeight > blendThreshold) {
-                    blendWeight = (blendWeight - blendThreshold) / (1.0f - blendThreshold);
-                }
-                else {
-                    blendWeight = 0.0f;
-                }
+            auto itPlains = biomeMaterial.find("plains");
+            if (itPlains != biomeMaterial.end()) {
+                plainsMat = itPlains->second;
+                plainsWeight = biomeWeights["plains"];
+            }
+            auto itMountains = biomeMaterial.find("mountains");
+            if (itMountains != biomeMaterial.end()) {
+                mountainsMat = itMountains->second;
+                mountainsWeight = biomeWeights["mountains"];
             }
 
-            m_materialWeights[idx].matBL = static_cast<float>(mainMat);
-            m_materialWeights[idx].matBR = static_cast<float>(secondMat);
-            m_materialWeights[idx].matTL = blendWeight;
-        }
-    }
+            if (plainsMat == -1) plainsMat = mountainsMat;
+            if (mountainsMat == -1) mountainsMat = plainsMat;
+            if (plainsMat == -1) plainsMat = 0;
+            if (mountainsMat == -1) mountainsMat = 0;
 
-    std::vector<int> primary(m_width * m_depth, 0);
-    std::vector<int> secondary(m_width * m_depth, 0);
-    std::vector<float> blend(m_width * m_depth, 0.0f);
-
-    for (int i = 0; i < m_width * m_depth; ++i) {
-        primary[i] = static_cast<int>(m_materialWeights[i].matBL);
-        secondary[i] = static_cast<int>(m_materialWeights[i].matBR);
-        blend[i] = m_materialWeights[i].matTL;
-    }
-
-    std::vector<int> blurred(primary.size(), 0);
-    int r = 1; // radius for smoothing, can be tuned
-    for (int z = 0; z < m_depth; ++z) {
-        for (int x = 0; x < m_width; ++x) {
-            int idx = z * m_width + x;
-            float sum = 0.0f;
-            int count = 0;
-            for (int dz = -r; dz <= r; ++dz) {
-                for (int dx = -r; dx <= r; ++dx) {
-                    int nx = x + dx;
-                    int nz = z + dz;
-                    if (nx < 0 || nx >= m_width || nz < 0 || nz >= m_depth) continue;
-                    sum += static_cast<float>(primary[nz * m_width + nx]);
-                    count++;
-                }
-            }
-            if (count > 0) {
-                float avg = sum / count;
-                blurred[idx] = static_cast<int>(std::round(avg));
-            }
-            else blurred[idx] = primary[idx];
-        }
-    }
-
-    // Reassign final material weights per corner using blurred primary and stored secondary/blend
-    for (int z = 0; z < m_depth; ++z) {
-        for (int x = 0; x < m_width; ++x) {
-            int idx = z * m_width + x;
-            int mainMat = blurred[idx];
-            int secMat = secondary[idx];
-            float bw = blend[idx];
-
-            if (bw > 0.01f && secMat != mainMat) {
-                // alternate corner assignment for simple cross-blend
-                m_materialWeights[idx].matBL = static_cast<float>(mainMat);
-                m_materialWeights[idx].matBR = static_cast<float>(secMat);
-                m_materialWeights[idx].matTL = static_cast<float>(mainMat);
-                m_materialWeights[idx].matTR = static_cast<float>(secMat);
-            } else {
-                m_materialWeights[idx].matBL = static_cast<float>(mainMat);
-                m_materialWeights[idx].matBR = static_cast<float>(mainMat);
-                m_materialWeights[idx].matTL = static_cast<float>(mainMat);
-                m_materialWeights[idx].matTR = static_cast<float>(mainMat);
-            }
+            m_materialWeights[idx].matBL = static_cast<float>(plainsMat);
+            m_materialWeights[idx].matBR = static_cast<float>(mountainsMat);
+            m_materialWeights[idx].matTL = mountainsWeight;
+            m_materialWeights[idx].matTR = mountainsWeight;
         }
     }
 }
@@ -655,11 +510,9 @@ void Terrain::generateWithBiome(std::shared_ptr<Biome> biome, int seed) {
             float totalHeight = 0.0f;
             float totalWeight = 0.0f;
 
-            // apply a small smoothing to weights to avoid single-sample spikes
             for (const auto& [b, weight] : biomes) {
                 if (!b) continue;
                 float w = std::max(0.0f, weight);
-                // small exponent to favor stronger biomes but keep contribution
                 w = pow(w, 1.1f);
                 float h = calculateBiomeHeight(worldX, worldZ, b);
                 totalHeight += h * w;
@@ -672,7 +525,7 @@ void Terrain::generateWithBiome(std::shared_ptr<Biome> biome, int seed) {
         }
     }
 
-    applyGaussianBlur(2);
+    applyGaussianBlur(4);
     computeNormals();
     computeBounds();
 
@@ -681,7 +534,7 @@ void Terrain::generateWithBiome(std::shared_ptr<Biome> biome, int seed) {
     }
 }
 
-void Terrain::generateStructures(unsigned int seed) {
+void Terrain::generateStructures(unsigned int seed, Engine& engine) {
     clearStructures();
 
     if (!m_biome || m_biome->structures.empty()) return;
@@ -736,19 +589,17 @@ void Terrain::generateStructures(unsigned int seed) {
                 }
 
                 if (!tooClose && dist01(rng) < prob) {
-                    auto obj = std::make_shared<Structure>();
+                    auto obj = engine.scene.workspace->addChild<Object3D>(structDef.name, ObjectType::CUSTOM);
                     obj->modelPath = structDef.modelPath;
-                    obj->structName = m_biome->name + "_" +
-                        (structDef.modelPath.find("tree") != std::string::npos ? "tree" : "rock");
-
+                    obj->name = structDef.name;
                     obj->scale = structDef.scale;
                     obj->modelScale = structDef.modelScale;
-                    obj->position = Vector3(worldX, height + structDef.scale.y * 0.5f, worldZ);
+                    obj->position = Vector3(worldX, height + structDef.scale.y * 0.5f - 0.25f, worldZ) + structDef.positionOffset;
                     obj->rotation.y = dist01(rng) * 2 * 3.14159f;
                     obj->isStatic = true;
-                    obj->type = 1;
-
-                    structures.push_back(obj);
+                    obj->type = ObjectType::CUSTOM;
+                    obj->color[0] = 1.0f; obj->color[1] = 1.0f; obj->color[2] = 1.0f;
+                    objects.push_back(obj);
                 }
             }
         }
@@ -881,100 +732,102 @@ if (m_heights.empty() || m_normals.empty()) return;
             int i1 = z * m_width + x + 1;
             int i2 = (z + 1) * m_width + x;
             int i3 = (z + 1) * m_width + x + 1;
-            
+
             float h00 = m_heights[i0];
             float h10 = m_heights[i1];
             float h01 = m_heights[i2];
             float h11 = m_heights[i3];
-            
-            float m00 = m_materialWeights[i0].matBL;
-            float m10 = m_materialWeights[i1].matBR;
-            float m01 = m_materialWeights[i2].matTL;
-            float m11 = m_materialWeights[i3].matTR;
-            
-            Vertex v0, v1, v2;
-            
+
+            Vertex v0;
             v0.px = m_originX + x * m_gridSpacing;
             v0.py = h00;
             v0.pz = m_originZ + z * m_gridSpacing;
-            v0.nx = m_normals[i0].x;
-            v0.ny = m_normals[i0].y;
-            v0.nz = m_normals[i0].z;
-            v0.tu = (float)x / (m_width - 1) * 60.0f;
-            v0.tv = (float)z / (m_depth - 1) * 60.0f;
-            v0.material1 = m00;
-            v0.material2 = m10;
-            v0.material3 = m01;
-            
+            v0.nx = m_normals[i0].x; v0.ny = m_normals[i0].y; v0.nz = m_normals[i0].z;
+            v0.tu = (float)x / (m_width - 1) * TEXTURE_SIZE;
+            v0.tv = (float)z / (m_depth - 1) * TEXTURE_SIZE;
+
+            Vertex v1;
             v1.px = m_originX + (x + 1) * m_gridSpacing;
             v1.py = h10;
             v1.pz = m_originZ + z * m_gridSpacing;
-            v1.nx = m_normals[i1].x;
-            v1.ny = m_normals[i1].y;
-            v1.nz = m_normals[i1].z;
-            v1.tu = (float)(x + 1) / (m_width - 1) * 60.0f;
-            v1.tv = (float)z / (m_depth - 1) * 60.0f;
-            v1.material1 = m00;
-            v1.material2 = m10;
-            v1.material3 = m01;
-            
+            v1.nx = m_normals[i1].x; v1.ny = m_normals[i1].y; v1.nz = m_normals[i1].z;
+            v1.tu = (float)(x + 1) / (m_width - 1) * TEXTURE_SIZE;
+            v1.tv = (float)z / (m_depth - 1) * TEXTURE_SIZE;
+
+            Vertex v2;
             v2.px = m_originX + x * m_gridSpacing;
             v2.py = h01;
             v2.pz = m_originZ + (z + 1) * m_gridSpacing;
-            v2.nx = m_normals[i2].x;
-            v2.ny = m_normals[i2].y;
-            v2.nz = m_normals[i2].z;
-            v2.tu = (float)x / (m_width - 1) * 60.0f;
-            v2.tv = (float)(z + 1) / (m_depth - 1) * 60.0f;
-            v2.material1 = m00;
-            v2.material2 = m10;
-            v2.material3 = m01;
-            
-            vertices.push_back(v0);
-            vertices.push_back(v1);
-            vertices.push_back(v2);
-            
-            Vertex v3, v4, v5;
-            
-            v3 = v1;
-            v3.material1 = m11;
-            v3.material2 = m01;
-            v3.material3 = m10;
-            
+            v2.nx = m_normals[i2].x; v2.ny = m_normals[i2].y; v2.nz = m_normals[i2].z;
+            v2.tu = (float)x / (m_width - 1) * TEXTURE_SIZE;
+            v2.tv = (float)(z + 1) / (m_depth - 1) * TEXTURE_SIZE;
+
+            Vertex v3 = v1;
+            Vertex v5 = v2;
+            Vertex v4;
             v4.px = m_originX + (x + 1) * m_gridSpacing;
             v4.py = h11;
             v4.pz = m_originZ + (z + 1) * m_gridSpacing;
-            v4.nx = m_normals[i3].x;
-            v4.ny = m_normals[i3].y;
-            v4.nz = m_normals[i3].z;
-            v4.tu = (float)(x + 1) / (m_width - 1) * 60.0f;
-            v4.tv = (float)(z + 1) / (m_depth - 1) * 60.0f;
-            v4.material1 = m11;
-            v4.material2 = m01;
-            v4.material3 = m10;
-            
-            v5 = v2;
-            v5.material1 = m11;
-            v5.material2 = m01;
-            v5.material3 = m10;
-            
+            v4.nx = m_normals[i3].x; v4.ny = m_normals[i3].y; v4.nz = m_normals[i3].z;
+            v4.tu = (float)(x + 1) / (m_width - 1) * TEXTURE_SIZE;
+            v4.tv = (float)(z + 1) / (m_depth - 1) * TEXTURE_SIZE;
+
+            float mat00_1 = m_materialWeights[i0].matBL;
+            float mat00_2 = m_materialWeights[i0].matBR;
+            float blend00 = m_materialWeights[i0].matTL;
+
+            float mat10_1 = m_materialWeights[i1].matBL;
+            float mat10_2 = m_materialWeights[i1].matBR;
+            float blend10 = m_materialWeights[i1].matTL;
+
+            float mat01_1 = m_materialWeights[i2].matBL;
+            float mat01_2 = m_materialWeights[i2].matBR;
+            float blend01 = m_materialWeights[i2].matTL;
+
+            float mat11_1 = m_materialWeights[i3].matBL;
+            float mat11_2 = m_materialWeights[i3].matBR;
+            float blend11 = m_materialWeights[i3].matTL;
+
+            v0.material1 = mat00_1;
+            v0.material2 = mat00_2;
+            v0.material3 = blend00;
+
+            v1.material1 = mat10_1;
+            v1.material2 = mat10_2;
+            v1.material3 = blend10;
+
+            v2.material1 = mat01_1;
+            v2.material2 = mat01_2;
+            v2.material3 = blend01;
+
+            v3.material1 = mat10_1;
+            v3.material2 = mat10_2;
+            v3.material3 = blend10;
+
+            v4.material1 = mat11_1;
+            v4.material2 = mat11_2;
+            v4.material3 = blend11;
+
+            v5.material1 = mat01_1;
+            v5.material2 = mat01_2;
+            v5.material3 = blend01;
+
+            vertices.push_back(v0);
+            vertices.push_back(v1);
+            vertices.push_back(v2);
             vertices.push_back(v3);
             vertices.push_back(v4);
             vertices.push_back(v5);
         }
     }
     
-    m_indexCount = vertices.size();
+    indexCount = vertices.size();
     
-    glGenBuffers(1, &m_EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-
-    glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
     
-    glBindVertexArray(m_VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
     
     // Position
@@ -1005,8 +858,8 @@ if (m_heights.empty() || m_normals.empty()) return;
 }
 
 void Terrain::draw() const {
-    glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, m_indexCount);
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, indexCount);
     glBindVertexArray(0);
 }
 
@@ -1059,7 +912,6 @@ void Terrain::debugMaterials() {
         std::cout << "Chunk (" << gridX << "," << gridZ << ") - NO MATERIAL SET!" << std::endl;
         return;
     }
-
     std::cout << "Chunk (" << gridX << "," << gridZ << ") - Biome: "
         << (m_biome ? m_biome->name : "NULL") << std::endl;
     std::cout << "  MaterialSet: " << m_materialSet->name << " with "
@@ -1070,8 +922,6 @@ void Terrain::debugMaterials() {
         std::cout << "    [" << i << "] " << mat->name
             << " height [" << mat->minHeight << ", " << mat->maxHeight << "]" << std::endl;
     }
-
-    // Показываем высоты нескольких точек
     std::cout << "  Sample heights:" << std::endl;
     for (int z = 0; z < m_depth; z += m_depth / 4) {
         for (int x = 0; x < m_width; x += m_width / 4) {

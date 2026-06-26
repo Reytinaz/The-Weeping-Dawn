@@ -1,11 +1,35 @@
-#include "targetArch.hpp"
+Ôªø#include "targetArch.hpp"
 #include "engine.hpp"
 #include "glad.h"
+#include "basetsd.h"
+#include "processthreadsapi.h"
+#include "sstream"
 
 namespace {
 	std::filesystem::path resourcesDir() {
 		return "";
 	}
+}
+
+LRESULT CALLBACK Engine::SubclassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam,
+	UINT_PTR subclassId, DWORD_PTR refData) {
+	Engine* engine = (Engine*)refData;
+	switch (msg) {
+	case WM_SYSCOMMAND:
+		if (wParam == SC_RESTORE || wParam == SC_MINIMIZE)
+			return 0;
+		break;
+	case WM_NCLBUTTONDOWN:
+		if (wParam == HTCAPTION)
+			return 0;
+		break;
+	case WM_SIZING:
+		return TRUE;
+	case WM_CLOSE:
+		engine->window->close();
+		return 0;
+	}
+	return DefSubclassProc(hwnd, msg, wParam, lParam);
 }
 
 static void renderBoundingBox(const std::shared_ptr<Object3D>& obj, const Camera& camera) {
@@ -32,9 +56,9 @@ static void renderBoundingBox(const std::shared_ptr<Object3D>& obj, const Camera
 	}
 
 	int edges[12][2] = {
-		{0,1}, {1,2}, {2,3}, {3,0}, // ÌËÊÌˇˇ „‡Ì¸
-		{4,5}, {5,6}, {6,7}, {7,4}, // ‚ÂıÌˇˇ „‡Ì¸
-		{0,4}, {1,5}, {2,6}, {3,7}  // ‚ÂÚËÍ‡ÎË
+		{0,1}, {1,2}, {2,3}, {3,0},
+		{4,5}, {5,6}, {6,7}, {7,4},
+		{0,4}, {1,5}, {2,6}, {3,7}
 	};
 
 	GLboolean depthTestEnabled;
@@ -91,17 +115,55 @@ void Engine::initVariables() {
 	this->contSettings.antiAliasingLevel = 2;
 	this->contSettings.majorVersion = 3;
 	this->contSettings.minorVersion = 3;
-	this->vidMode.size = sf::Vector2u(vidMode.getDesktopMode().size.x, vidMode.getDesktopMode().size.y);
 	this->usrSettings = userSettings();
 	this->renderer = new Renderer(vidMode.getDesktopMode().size.x, vidMode.getDesktopMode().size.y);
 	this->renderer->camera = std::make_shared<Camera>();
 }
 
 void Engine::initWindow() {
-	window = new sf::RenderWindow(vidMode.getDesktopMode(), "The Weeping Dawn", sf::Style::Close, sf::State::Fullscreen, contSettings);
+	RECT workArea;
+	SystemParametersInfo(SPI_GETWORKAREA, 0, &workArea, 0);
+	sf::Vector2u winSize(workArea.right - workArea.left, workArea.bottom - workArea.top);
+	sf::Vector2i winPos(workArea.left, workArea.top);
+
+	window = new sf::RenderWindow(sf::VideoMode(winSize), "The Weeping Dawn",
+		sf::Style::Default,
+		sf::State::Windowed,
+		contSettings);
 	window->setFramerateLimit(60);
 	window->setVerticalSyncEnabled(true);
-	if (!window->setActive(true)) std::cout << "Failed to active the Window" << std::endl;
+	if (!window->setActive(true))
+		std::cout << "Failed to activate the Window" << std::endl;
+
+	#ifdef _WIN32
+		HWND hwnd = window->getNativeHandle();
+		LONG style = GetWindowLong(hwnd, GWL_STYLE);
+		style &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+		SetWindowLong(hwnd, GWL_STYLE, style);
+
+		SetWindowPos(hwnd, NULL, 0, 0, 0, 0,
+			SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
+
+		HMENU sysMenu = GetSystemMenu(hwnd, FALSE);
+		RemoveMenu(sysMenu, SC_MAXIMIZE, MF_BYCOMMAND);
+		SetWindowSubclass(hwnd, SubclassProc, SubclassId, (DWORD_PTR)this);
+
+		int clientW = workArea.right - workArea.left;
+		int clientH = workArea.bottom - workArea.top;
+
+		RECT rc = { 0, 0, clientW, clientH };
+		AdjustWindowRect(&rc, style, FALSE);
+		int fullW = rc.right - rc.left;
+		int fullH = rc.bottom - rc.top;
+		int posX = workArea.left + rc.left;
+		int posY = workArea.top + rc.top;
+
+		SetWindowPos(hwnd, HWND_TOP, posX, posY, fullW, fullH, SWP_NOZORDER);
+		RECT clientRect;
+		GetClientRect(hwnd, &clientRect);
+		window->setSize(sf::Vector2u(clientRect.right - clientRect.left,
+			clientRect.bottom - clientRect.top));
+	#endif
 }
 
 void Engine::initOpenGL() const {
@@ -136,7 +198,11 @@ Engine::~Engine() {
 	for (auto& t : threads) {
 		if (t.joinable()) t.join();
 	}
-	delete window;
+	if (window) {
+		HWND hwnd = window->getNativeHandle();
+		RemoveWindowSubclass(hwnd, SubclassProc, SubclassId);
+		delete window;
+	}
 	delete renderer;
 }
 
@@ -172,7 +238,7 @@ void Engine::render() {
 	window->pushGLStates();
 	window->resetGLStates();
 	scene.renderInterface(*window);
-	if (debugEnabled) renderHierarchy();
+	if (debugEnabled && usrSettings.showHieararchy) renderHierarchy();
 	window->popGLStates();
 	window->display();
 }
@@ -182,7 +248,6 @@ void Engine::logic() {
 		if (event->is<sf::Event::Closed>()) {
 			window->close();
 		}
-
 		if (!paused) {
 			if (renderer->camera->cameraType == CameraType::FIRST_PERSON) {
 				if (inWindow && character) {
@@ -191,7 +256,7 @@ void Engine::logic() {
 						const sf::Vector2i center(window->getSize().x / 2, window->getSize().y / 2);
 						const sf::Vector2i& delta = mousePos - center;
 
-						float sensitivity = usrSettings.mouse_sensivity * 0.01f;
+						float sensitivity = usrSettings.mouse_sensivity * 0.025f;
 						const float maxPitch = 1.5f;
 						renderer->camera->rotation.x += delta.y * sensitivity * (usrSettings.invert_y ? -1 : 1);
 						renderer->camera->rotation.x = std::max(-maxPitch, std::min(maxPitch, renderer->camera->rotation.x));
@@ -227,6 +292,7 @@ void Engine::logic() {
 					}
 				}
 			}
+			
 			else if (renderer->camera->cameraType == CameraType::FREECAM) {
 				character->handleInput(CharacterInput::FORWARD, true);
 				character->handleInput(CharacterInput::BACKWARD, true);
@@ -386,14 +452,37 @@ void Engine::spawnCharacter() {
 	}
 }
 
-void Engine::pushObj3D(std::shared_ptr<Object3D> obj) const {
+void Engine::saveToChunk(std::shared_ptr<Instance> obj) {
+	if (currentDimension->chunkManager) {
+		if (auto obj3d = std::dynamic_pointer_cast<Object3D>(obj)) {
+			auto chunk = currentDimension->chunkManager->getChunkAt(obj3d->position.x, obj3d->position.z);
+			if (chunk) {
+				chunk->objects.push_back(obj);
+				worldManagment.saveChunk(currentWorldPath, currentDimension->name, chunk);
+			}
+		}
+		if (auto srcLight = std::dynamic_pointer_cast<SourceLight>(obj)) {
+			auto chunk = currentDimension->chunkManager->getChunkAt(srcLight->position.x, srcLight->position.z);
+			if (chunk) {
+				chunk->objects.push_back(obj);
+				worldManagment.saveChunk(currentWorldPath, currentDimension->name, chunk);
+			}
+		}
+	}
+}
+
+void Engine::pushObj3D(std::shared_ptr<Object3D> obj) {
 	obj->setupBuffers();
 	obj->initOpenGL();
 	if (currentDimension) {
 		currentDimension->physics->addObject(obj);
-		if (auto ch = std::dynamic_pointer_cast<Character>(obj)) {
+		auto ch = std::dynamic_pointer_cast<Character>(obj);
+		if (ch) {
 			ch->physics = currentDimension->physics;
 			ch->chunkManager = currentDimension->chunkManager;
+		}
+		if (!ch) {
+			saveToChunk(obj);
 		}
 	}
 	obj->applyModelScale();
@@ -466,13 +555,13 @@ void Engine::loadDimension(const std::string& name, unsigned int seed, std::shar
 
 	if (dimension->skybox) {
 		dimension->skybox->renderer = renderer;
-		dimension->skybox->load(dimension->skyboxFaces);
+		dimension->skybox->load(dimension->skyboxFaces, dimension->celestialBodies);
 	}
 
 	renderer->setChunkManager(dimension->chunkManager);
 	renderer->setCurrentDimension(&*dimension);
 	currentDimension = dimension;
-
+	/*
 	auto sunlight = scene.workspace->addChild<SourceLight>("Sunlight");
 	sunlight->type = dimension->sunlight->type;
 	sunlight->color = dimension->sunlight->color;
@@ -486,6 +575,7 @@ void Engine::loadDimension(const std::string& name, unsigned int seed, std::shar
 	sunlight->outerCutOff = dimension->sunlight->outerCutOff;
 	sunlight->quadratic = dimension->sunlight->quadratic;
 	dimension->sunlight = sunlight;
+	*/
 }
 
 bool Engine::loadWorld(const std::string& filename) {
@@ -560,6 +650,13 @@ size_t Engine::getAvailableStackSpace() {
 	}
 
 	return remainingSpace;
+}
+size_t Engine::getMemoryUsageBytes() const {
+	PROCESS_MEMORY_COUNTERS pmc;
+	if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
+		return pmc.WorkingSetSize;   // —Ñ–∏–∑–∏—á–µ—Å–∫–∞—è –ø–∞–º—è—Ç—å –ø—Ä–æ—Ü–µ—Å—Å–∞ (–±–∞–π—Ç)
+	}
+	return 0;
 }
 const float Engine::getDeltaTime() const {
 	return deltaTime;

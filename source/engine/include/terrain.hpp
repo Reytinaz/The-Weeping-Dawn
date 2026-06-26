@@ -8,8 +8,12 @@
 #include "map"
 #include "material.hpp"
 
+
+#define TEXTURE_SIZE 50.0f
+
 class Biome;
 class Dimension;
+class Engine;
 
 struct Structure {
     std::string structName;
@@ -98,15 +102,13 @@ public:
         std::shared_ptr<Terrain> bottomNeighbor);
 
     std::vector<std::shared_ptr<Structure>> structures;
-    std::vector<std::shared_ptr<Object3D>> objects;
+    std::vector<std::shared_ptr<Instance>> objects;
 
     void clearStructures() {
         for (auto& s : structures) {
-            // Удалить из физики? Но физика хранит свои копии объектов? В вашей архитектуре объекты физики и объекты сцены — одни и те же.
-            // Если объекты уже добавлены в physics.objects, то при очистке чанка нужно удалить их оттуда.
-            // Лучше хранить их только в чанке, а при генерации добавлять в physics и в workspace.
+
         }
-        structures.clear();
+        objects.clear();
     }
     bool containsPoint(float worldX, float worldZ) const {
         float localX = worldX - m_originX;
@@ -116,7 +118,7 @@ public:
         return (localX >= -0.01f && localX <= maxX + 0.01f &&
             localZ >= -0.01f && localZ <= maxZ + 0.01f);
     }
-    void generateStructures(unsigned int seed);
+    void generateStructures(unsigned int seed, Engine& engine);
     void applyGaussianBlur(int radius);
     void debugMaterials();
 
@@ -143,8 +145,8 @@ private:
     Vector3 minBound;
     Vector3 maxBound;
 
-    unsigned int m_VAO, m_VBO, m_EBO;
-    unsigned int m_indexCount;
+    unsigned int VAO, VBO;
+    unsigned int indexCount;
 };
 
 #endif

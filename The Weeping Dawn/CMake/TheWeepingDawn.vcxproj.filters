@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Container.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Frame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\InstanceUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Object3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\instance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\Image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\SourceLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\chunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\chunkManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\dimensionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\matrix4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\postProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\sceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\shadowMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\vector2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\vector3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\vector4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\worldManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\glad.c">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D4C8362B-5BE8-317B-AB21-40A80BA0C504}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -11,16 +11,11 @@
 
 struct CelestialBody {
     std::string name;
-    std::string texture;
-    Vector3 direction;
-    Vector3 color;
-    float intensity;
+    std::string texturePath;
+    std::shared_ptr<SourceLight> sourceLight;
+    unsigned int textureId;
     float size;
-    float orbitRadius;
-    float orbitSpeed;
-    float currentAngle;
-    bool isSun;
-    unsigned int textureID;
+    float softness;
 };
 
 class Dimension {
@@ -32,23 +27,37 @@ public:
     bool active = false;
     Physics* physics;
     ChunkManager* chunkManager;
-    std::vector<CelestialBody> celestialBodies;
+    std::vector<std::shared_ptr<CelestialBody>> celestialBodies;
     std::shared_ptr<Skybox> skybox;
     std::vector<std::string> skyboxFaces;
     Vector3 spawnPoint;
     float noiseParams[3];
     std::map<int64_t, std::shared_ptr<Terrain>> chunks;
-    std::shared_ptr<SourceLight> sunlight;
 
     std::vector<std::shared_ptr<Biome>> biomes;
     float biomeScale = 0.002f;
 
     mutable std::shared_ptr<MaterialSet> mergedMaterialSet;
     mutable std::unordered_map<std::string, int> mergedMaterialIndexMap;
+    mutable std::mutex mergedMutex;
 
+    float fogStart = 0.5f;
     float timeOfDay = 0.5f;
     float daySpeed = 0.02f;
     bool dayNightCycle = true;
+    bool isDay = true;
+
+    bool hasClouds = true;
+    float cloudsDensity = 1.0f;
+    float cloudsCover = 0.5f;
+    float cloudsScale = 0.00003f;
+    Vector3 cloudsWind{ 0.01f, 0.0f, 0.005f };
+
+    float sunGlowIntensity = 1.0f;
+    Vector3 dawnSkyColor = Vector3(1.0f, 0.5f, 0.2f);
+    Vector3 skyColor = Vector3(1.2f, 1.2f, 1.2f);
+    Vector3 nightSkyColor = Vector3(0.01f, 0.01f, 0.04f);
+    std::string mainLightSource = "Sun";
 
     std::shared_ptr<Biome> getBiomeAt(float worldX, float worldZ, std::shared_ptr<PerlinNoise> noise) {
         if (biomes.empty()) return nullptr;
@@ -62,8 +71,10 @@ public:
         return biomes[index];
     }
     void ensureMergedMaterialCache() const {
+        std::lock_guard<std::mutex> lock(mergedMutex);
         if (mergedMaterialSet) return;
-        mergedMaterialSet = std::make_shared<MaterialSet>("merged_biomes");
+        mergedMaterialSet = std::make_shared<MaterialSet>();
+        mergedMaterialSet->name = "merged_biomes";
         mergedMaterialIndexMap.clear();
         for (const auto& b : biomes) {
             if (!b || !b->materialSet) continue;
@@ -104,7 +115,6 @@ public:
                     float dist = sqrt(dx * dx + dz * dz);
                     if (dist >= actualRadius) continue;
                     float t = dist / actualRadius;
-                    // smootherstep: 1 - smoothstep(t)
                     float smooth = 1.0f - (t * t * (3.0f - 2.0f * t));
                     if (smooth > 0.001f) {
                         weights[biome] += smooth;
@@ -146,7 +156,6 @@ public:
     }
 
     void renderSkybox(std::shared_ptr<Camera> camera) const;
-    void clear();
 };
 
 #endif

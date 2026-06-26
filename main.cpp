@@ -50,21 +50,37 @@ int main() {
 	DEV_username->size = sf::Vector2f(0.1f, 0.07f);
 	DEV_username->alignmentX = 3;
 	DEV_username->alignmentY = 3;
+	DEV_username->shape->setFillColor(sf::Color(255, 255, 255, 200));
 	auto DEV_stackText = devUIFolder->addChild<Text>("Stack", globalFont, "??? - KB");
 	DEV_stackText->position = sf::Vector2f(0.01f, 0.06f);
 	DEV_stackText->size = sf::Vector2f(0.1f, 0.07f);
 	DEV_stackText->alignmentX = 3;
 	DEV_stackText->alignmentY = 3;
+	DEV_stackText->shape->setFillColor(sf::Color(255, 255, 255, 200));
 	auto DEV_deltaTime = devUIFolder->addChild<Text>("DeltaTime", globalFont, "???");
 	DEV_deltaTime->position = sf::Vector2f(0.01f, 0.11f);
 	DEV_deltaTime->size = sf::Vector2f(0.1f, 0.07f);
 	DEV_deltaTime->alignmentX = 3;
 	DEV_deltaTime->alignmentY = 3;
+	DEV_deltaTime->shape->setFillColor(sf::Color(255, 255, 255, 200));
 	auto DEV_chunks = devUIFolder->addChild<Text>("ChunksRender", globalFont, "???");
 	DEV_chunks->position = sf::Vector2f(0.01f, 0.16f);
 	DEV_chunks->size = sf::Vector2f(0.1f, 0.07f);
 	DEV_chunks->alignmentX = 3;
 	DEV_chunks->alignmentY = 3;
+	DEV_chunks->shape->setFillColor(sf::Color(255, 255, 255, 200));
+	auto DEV_fps = devUIFolder->addChild<Text>("FPS", globalFont, "???");
+	DEV_fps->position = sf::Vector2f(0.12f, 0.01f);
+	DEV_fps->size = sf::Vector2f(0.1f, 0.07f);
+	DEV_fps->alignmentX = 3;
+	DEV_fps->alignmentY = 3;
+	DEV_fps->shape->setFillColor(sf::Color(255, 255, 255, 200));
+	auto DEV_memory = devUIFolder->addChild<Text>("Memory", globalFont, "???");
+	DEV_memory->position = sf::Vector2f(0.12f, 0.06f);
+	DEV_memory->size = sf::Vector2f(0.1f, 0.07f);
+	DEV_memory->alignmentX = 3;
+	DEV_memory->alignmentY = 3;
+	DEV_memory->shape->setFillColor(sf::Color(255, 255, 255, 200));
 
 	// -- MAIN UI -- \\
 
@@ -219,7 +235,7 @@ int main() {
 		if (!engine.inMenu) {
 			engine.setDebugMode(!engine.isDebuging());
 			engine.scene.interface->findChild("DevUI")->visible = engine.isDebuging();
-			if (engine.isDebuging()) engine.getRenderer().camera->cameraType = CameraType::FREECAM;
+			if (engine.isDebuging() && engine.usrSettings.freeCameraEnabled) engine.getRenderer().camera->cameraType = CameraType::FREECAM;
 			else engine.getRenderer().camera->cameraType = CameraType::FIRST_PERSON;
 		}
 	});
@@ -240,6 +256,33 @@ int main() {
 		}
 	});
 
+
+	// TESTS
+	engine.bindKey(sf::Keyboard::Key::R, [](Engine& engine) {
+		auto block = engine.scene.workspace->addChild<Object3D>("Centre", ObjectType::CUBE);
+		block->position = engine.getMainCamera()->position;
+		block->scale = Vector3(0.25f, 0.25f, 0.25f);
+		block->isStatic = true;
+		block->color[0] = 2.f;
+		block->color[1] = 2.f;
+		block->color[2] = 2.f;
+		engine.pushObj3D(block);
+
+		auto light = engine.scene.workspace->addChild<SourceLight>("Sunlight");
+		light->type = LightType::POINT_LIGHT;
+		light->color = Vector3(1.0f, 1.0f, 1.0f);
+		light->enabled = true;
+		light->position = engine.getMainCamera()->position;
+		light->direction = Vector3(0, 0, 0);
+		light->intensity = 2.0f;
+		light->constant = 1.0f;
+		light->linear = 0.1f;
+		light->cutOff = 7.0f;
+		light->outerCutOff = 10.0f;
+		light->quadratic = 0.1f;
+		engine.saveToChunk(light);
+	});
+
 	// -- WORKSPACE -- \\
 
 	auto centre = engine.scene.workspace->addChild<Object3D>("Centre", ObjectType::CUBE);
@@ -251,73 +294,6 @@ int main() {
 	centre->color[2] = 1.f;
 	engine.pushObj3D(centre);
 
-	auto ground = engine.scene.workspace->addChild<Object3D>("Ground", ObjectType::CUBE);
-	ground->position = Vector3(0, 0, 0);
-	ground->scale = Vector3(10, 0.5f, 10);
-	ground->isStatic = true;
-	ground->color[0] = 1.f;
-	ground->color[1] = 1.f;
-	ground->color[2] = 1.f;
-	engine.pushObj3D(ground);
-
-	auto upGround = engine.scene.workspace->addChild<Object3D>("UpGround", ObjectType::CUBE);
-	upGround->position = Vector3(3, 3, 3);
-	upGround->scale = Vector3(5, 0.5f, 5);
-	upGround->isStatic = true;
-	upGround->color[0] = 1.f;
-	upGround->color[1] = 1.f;
-	upGround->color[2] = 1.f;
-	engine.pushObj3D(upGround);
-
-	auto test1 = engine.scene.workspace->addChild<Object3D>("Test1", ObjectType::CUBE);
-	test1->position = Vector3(0, -5, 0);
-	test1->scale = Vector3(1, 1, 1);
-	test1->isStatic = true;
-	test1->color[0] = 1.f;
-	test1->color[1] = 1.f;
-	test1->color[2] = 1.f;
-	engine.pushObj3D(test1);
-
-	auto sphere1 = engine.scene.workspace->addChild<Object3D>("Sphere1", ObjectType::SPHERE);
-	sphere1->position = Vector3(-1, 5, -1);
-	sphere1->scale = Vector3(1, 1, 1);
-	sphere1->isStatic = false;
-	sphere1->color[0] = 1.f;
-	sphere1->color[1] = 1.f;
-	sphere1->color[2] = 1.f;
-	engine.pushObj3D(sphere1);
-
-	for (int i = 0; i < 5; ++i) {
-		auto cube = engine.scene.workspace->addChild<Object3D>("Cube", ObjectType::CUBE);
-		cube->position = Vector3(static_cast<float>(i) * 2.0f - 4.0f, 12.0f + static_cast<float>(i) * 2.0f, static_cast<float>(i));
-		cube->scale = Vector3(1, 1, 1);
-		cube->color[0] = 0.2f + i * 0.1f;
-		cube->color[1] = 0.5f;
-		cube->color[2] = 0.8f;
-		engine.pushObj3D(cube);
-	}
-
-	auto test5 = engine.scene.workspace->addChild<Object3D>("TEST5_BLENDER", ObjectType::CUSTOM);
-	test5->loadOBJ("assets/models/test5.obj");
-	test5->position = Vector3(1, 5, 1);
-	test5->scale = Vector3(1, 1, 1);
-	test5->color[0] = 0.8f;
-	test5->color[1] = 0.4f;
-	test5->color[2] = 0.2f;
-	engine.pushObj3D(test5);
-
-
-	/*
-	auto rocketa = engine.scene.workspace->addChild<Object3D>("Cube", ObjectType::CUSTOM);
-	rocketa->loadOBJ("assets/data/models/Rocketa.obj");
-	rocketa->position = Vector3(-1, 5, -1);
-	rocketa->scale = Vector3(1, 1, 1);
-	rocketa->color[0] = 0.2f;
-	rocketa->color[1] = 0.2f;
-	rocketa->color[2] = 0.2f;
-	engine.pushObj3D(rocketa);
-	*/
-
 	std::cout << "=== Engine Was Initialized ===" << std::endl;
 
 	while (engine.isRunning()) {
@@ -326,6 +302,10 @@ int main() {
 
 		DEV_deltaTime->text->setString(std::to_string(engine.getDeltaTime()) + " - DT");
 		DEV_stackText->text->setString(std::to_string(engine.getAvailableStackSpace() / 1024) + " - KB Stack");
+		DEV_fps->text->setString(std::to_string(static_cast<int>(1.0f / engine.getDeltaTime())) + " - FPS");
+		size_t memBytes = engine.getMemoryUsageBytes();
+		float memMB = memBytes / (1024.0f * 1024.0f);
+		DEV_memory->text->setString(std::to_string(static_cast<int>(memMB)) + " - MB");
 		if (engine.currentDimension) {
 			DEV_chunks->text->setString(std::to_string(engine.currentDimension->chunkManager->getVisibleChunks().size()) + " Chunks");
 		}

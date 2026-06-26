@@ -1,6 +1,7 @@
 #include "Object3D.hpp"
 #include "glad.h"
 #include "fstream"
+#include "sstream"
 
 Object3D::Object3D(const std::string& name, ObjectType type) : Instance(name, "Object3D") {
     this->type = type;

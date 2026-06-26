@@ -6,23 +6,28 @@
 #include "renderer.hpp"
 #include "worldManager.hpp"
 #include "dimensionManager.hpp"
-#include "basetsd.h"
-#include "processthreadsapi.h"
-#include "random"
 #include "functional"
 #include "thread"
-#include "chrono"
 #include "map"
+
+#ifdef _WIN32
+	#include "windows.h"
+	#include "commctrl.h"
+	#include "psapi.h"
+#endif
 
 struct keyBindData {
 	sf::Keyboard::Key key;
 	std::function<void(Engine&)> func;
 };
 struct userSettings {
-	float mouse_sensivity = 1.0f;
-	float view_distance = 0.5f;
+	float mouse_sensivity = 0.5f;
+	float view_distance = 0.75f;
 	bool invert_y = false;
 	float gamma = 1.0f;
+	float texuresSize = 0.4f;
+	bool showHieararchy = false;
+	bool freeCameraEnabled = false;
 };
 
 class Engine {
@@ -36,6 +41,11 @@ private:
 	sf::Vector2f mouseWorldPos;
 	Renderer* renderer;
 
+	#ifdef _WIN32
+		static LRESULT CALLBACK SubclassProc(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
+		static const UINT_PTR SubclassId = 1;
+	#endif
+
 	bool clickedOnText = false;
 	bool canClick = true;
 	bool inWindow = false;
@@ -48,14 +58,12 @@ private:
 
 	std::vector<keyBindData> keyBinds;
 	std::shared_ptr<Character> character;
+	std::vector<std::thread> threads;
 	sf::Clock clock;
 	float deltaTime;
+	int currentSeed = 12345;
 	std::unordered_map<std::string, std::shared_ptr<Object3D>> modelCache;
 
-	// misc stuff:
-
-	std::vector<std::thread> threads;
-	int currentSeed = 12345;
 
 	// private funtioncs:
 
@@ -94,17 +102,19 @@ public:
 	void setMouseCursorGrabbed(bool value);
 	void setMouseUnlocked(bool value);
 	void setMouseCursorVisible(bool value); 
-	void pushObj3D(std::shared_ptr<Object3D> obj) const;
+	void pushObj3D(std::shared_ptr<Object3D> obj);
 	void renderHierarchy();
 	bool loadWorld(const std::string& filename);
 	void clearWorld();
 	void clearDimension(const Dimension& dimension);
 	void loadDimension(const std::string& name, unsigned int seed, std::shared_ptr<PerlinNoise> perlinNoise, ChunkManager& cm);
 	void spawnCharacter();
+	void saveToChunk(std::shared_ptr<Instance> obj);
 	std::map<std::string, std::string> getWorldsList() const;
 	std::shared_ptr<Object3D> getModel(const std::string& path);
 
 	size_t getAvailableStackSpace();
+	size_t getMemoryUsageBytes() const;
 	const float getDeltaTime() const;
 	std::shared_ptr<Camera>& getMainCamera();
 	Renderer& getRenderer();

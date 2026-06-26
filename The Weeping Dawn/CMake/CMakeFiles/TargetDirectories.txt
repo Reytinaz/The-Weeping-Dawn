@@ -1,0 +1,3 @@
+C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/CMakeFiles/TheWeepingDawn.dir
+C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/CMakeFiles/ALL_BUILD.dir
+C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/CMakeFiles/ZERO_CHECK.dir

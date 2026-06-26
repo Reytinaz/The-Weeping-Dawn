@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EB75BE23-DFC5-3216-B4C9-F7BFE11F68F1}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>Win32</Platform>
+    <ProjectName>TheWeepingDawn</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TheWeepingDawn.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TheWeepingDawn</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TheWeepingDawn.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TheWeepingDawn</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">TheWeepingDawn.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">TheWeepingDawn</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">TheWeepingDawn.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">TheWeepingDawn</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/assets" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Debug/assets"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/bin" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Debug"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-graphics-d.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-window-d.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-system-d.lib;opengl32.lib;glu32.lib;comctl32.lib;user32.lib;gdi32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Debug/TheWeepingDawn.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Debug/TheWeepingDawn.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/assets" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Release/assets"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/bin" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Release"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-graphics.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-window.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-system.lib;opengl32.lib;glu32.lib;comctl32.lib;user32.lib;gdi32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Release/TheWeepingDawn.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/Release/TheWeepingDawn.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/assets" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/MinSizeRel/assets"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/bin" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/MinSizeRel"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-graphics-d.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-window-d.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-system-d.lib;opengl32.lib;glu32.lib;comctl32.lib;user32.lib;gdi32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/MinSizeRel/TheWeepingDawn.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/MinSizeRel/TheWeepingDawn.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/include"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/assets" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/RelWithDebInfo/assets"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/source/include/SFML-3.1.0/bin" "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/RelWithDebInfo"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-graphics-d.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-window-d.lib;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\sfml-system-d.lib;opengl32.lib;glu32.lib;comctl32.lib;user32.lib;gdi32.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers></ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/RelWithDebInfo/TheWeepingDawn.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/RelWithDebInfo/TheWeepingDawn.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn" "-BC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake" --check-stamp-file "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\WindowsPaths.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeCXXCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeRCCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeSystem.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfig.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfigVersion.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn" "-BC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake" --check-stamp-file "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\WindowsPaths.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeCXXCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeRCCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeSystem.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfig.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfigVersion.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn" "-BC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake" --check-stamp-file "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\WindowsPaths.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeCXXCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeRCCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeSystem.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfig.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfigVersion.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn" "-BC:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake" --check-stamp-file "C:/Users/Rey/Desktop/Testing Projects/The Weeping Dawn/The Weeping Dawn/CMake/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\WindowsPaths.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeCXXCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeRCCompiler.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\4.3.0-rc1\CMakeSystem.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfig.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLConfigVersion.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLGraphicsSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLSystemSharedTargets.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-debug.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets-release.cmake;C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\SFML-3.1.0\lib\cmake\SFML\SFMLWindowSharedTargets.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Button.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Character.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Container.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Frame.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\InstanceUI.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Object3D.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\Text.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\instances\instance.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\Image.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\SourceLight.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\camera.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\chunk.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\chunkManager.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\dimensionManager.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\engine.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\matrix4.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\physics.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\postProcessing.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\renderer.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\sceneManager.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\shader.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\shadowMap.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\skybox.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\terrain.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\texture.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\vector2.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\vector3.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\vector4.cpp" />
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\engine\src\worldManager.cpp" />
+    <None Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\source\include\glad.c">
+    </None>
+    <ClCompile Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\main.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\Rey\Desktop\Testing Projects\The Weeping Dawn\The Weeping Dawn\CMake\ZERO_CHECK.vcxproj">
+      <Project>{64087E06-3A09-30E0-8A0F-CD595929A276}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

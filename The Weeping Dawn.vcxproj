@@ -113,7 +113,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio-s.lib;sfml-network-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;sfml-audio-s.lib;sfml-network-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;flac.lib;comctl32.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -144,10 +144,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\fragment.glsl" />
-    <None Include="assets\shaders\vertex.glsl" />
-  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\engine\instances\Button.cpp" />
@@ -198,6 +194,7 @@
     <ClInclude Include="source\engine\include\shadowMap.hpp" />
     <ClInclude Include="source\engine\include\skybox.hpp" />
     <ClInclude Include="source\engine\include\SourceLight.hpp" />
+    <ClInclude Include="source\engine\include\targetArch.hpp" />
     <ClInclude Include="source\engine\include\terrain.hpp" />
     <ClInclude Include="source\engine\include\texture.hpp" />
     <ClInclude Include="source\engine\include\vector2.hpp" />
@@ -211,7 +208,6 @@
     <ClInclude Include="source\engine\instances\instance.hpp" />
     <ClInclude Include="source\engine\instances\Object3D.hpp" />
     <ClInclude Include="source\engine\instances\Text.hpp" />
-    <ClInclude Include="targetArch.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

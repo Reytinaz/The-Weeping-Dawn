@@ -30,14 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\vertex.glsl">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
-    <None Include="assets\shaders\fragment.glsl">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -130,9 +122,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetArch.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="source\engine\instances\Text.hpp">
       <Filter>Файлы заголовков\Classes</Filter>
     </ClInclude>
@@ -221,6 +210,9 @@
       <Filter>Файлы заголовков\Core</Filter>
     </ClInclude>
     <ClInclude Include="source\engine\include\biome.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\include\targetArch.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-#include "renderer.hpp"
+п»ї#include "renderer.hpp"
 #include "glad.h"
 
 Renderer::Renderer(int w, int h) : width(w), height(h), shadowMap(nullptr), shader(nullptr), chunkManager(nullptr), postProcess(nullptr) {}
@@ -61,7 +61,6 @@ bool Renderer::init() {
             ViewDepth = -viewPos.z;
             WorldHeight = worldPos.y;
     
-            // Вычисляем позиции в пространстве света для каждого каскада
             for (int i = 0; i < )";
             vertex += std::to_string(MAX_CASCADES);
             vertex += R"(; ++i) {
@@ -79,9 +78,7 @@ bool Renderer::init() {
         in vec2 TexCoord;
         in vec3 FragPos;
         in vec3 Normal;
-        in vec4 FragPosLightSpace[)";
-            fragment += std::to_string(MAX_CASCADES);
-            fragment += R"(];
+        in vec4 FragPosLightSpace[)" + std::to_string(MAX_CASCADES) + R"(];
         in float ViewDepth;
         in float WorldHeight;
 
@@ -89,15 +86,9 @@ bool Renderer::init() {
         in float vMaterial2;
         in float vMaterial3;
 
-        uniform sampler2D shadowMaps[)";
-            fragment += std::to_string(MAX_CASCADES);
-            fragment += R"(];
-        uniform mat4 lightSpaceMatrices[)";
-            fragment += std::to_string(MAX_CASCADES);
-            fragment += R"(];
-        uniform float cascadeSplits[)";
-            fragment += std::to_string(MAX_CASCADES + 1);
-            fragment += R"(];
+        uniform sampler2D shadowMaps[)" + std::to_string(MAX_CASCADES) + R"(];
+        uniform mat4 lightSpaceMatrices[)" + std::to_string(MAX_CASCADES) + R"(];
+        uniform float cascadeSplits[)" + std::to_string(MAX_CASCADES + 1) + R"(];
         uniform int numCascades;
 
         uniform sampler2D diffuseTexture;
@@ -110,14 +101,8 @@ bool Renderer::init() {
         uniform float shininess;
         uniform float bias;
         uniform float gamma;
-        uniform float cascadeRadii[)";
-            fragment += std::to_string(MAX_CASCADES);
-            fragment += R"(];
-        uniform float cascadeBias[)";
-            fragment += std::to_string(MAX_CASCADES);
-            fragment += R"(];
-
-        uniform int debugShadow;
+        uniform float cascadeRadii[)" + std::to_string(MAX_CASCADES) + R"(];
+        uniform float cascadeBias[)" + std::to_string(MAX_CASCADES) + R"(];
 
         #define MAX_LIGHTS 8
         struct Light {
@@ -138,21 +123,37 @@ bool Renderer::init() {
         uniform sampler2D materialTextures[16];
         uniform vec3 materialColors[16];
         uniform float materialUVScale[16];
-        uniform float materialRoughness[16];
         uniform int materialCount;
 
         uniform float chunkSize = 16.0;
         uniform int isTerrain;
 
+        uniform float slopeShadowStrength = 0.5;
+        uniform float slopeShadowSmooth = 0.5;
+
+        uniform float fogStart;
+        uniform float fogEnd;
+        uniform vec3 skyColor;
+
+        float noise2D(vec2 p) {
+            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+        }
+        float smoothNoise(vec2 p) {
+            vec2 i = floor(p);
+            vec2 f = fract(p);
+            f = f * f * (3.0 - 2.0 * f);
+            float a = mix(noise2D(i), noise2D(i + vec2(1.0, 0.0)), f.x);
+            float b = mix(noise2D(i + vec2(0.0, 1.0)), noise2D(i + vec2(1.0, 1.0)), f.x);
+            return mix(a, b, f.y);
+        }
+
         float shadowCalculation(vec3 projCoords, int cascadeIndex) {
             if (projCoords.x < 0.0 || projCoords.x > 1.0 || projCoords.y < 0.0 || projCoords.y > 1.0 || projCoords.z > 1.0)
-                return 1.0; // outside shadow map -> treat as lit
-
+                return 1.0;
             float currentDepth = projCoords.z;
             float shadow = 0.0;
             vec2 texelSize = 1.0 / textureSize(shadowMaps[cascadeIndex], 0);
             float radius = cascadeRadii[cascadeIndex];
-            // moderate PCF sampling counts for stability
             int samples = (cascadeIndex == 0) ? 3 : 2;
 
             for (int x = -samples; x <= samples; ++x) {
@@ -163,7 +164,7 @@ bool Renderer::init() {
                     shadow += currentDepth - biasNew > closestDepth ? 1.0 : 0.0;
                 }
             }
-            shadow /= ( (2*samples+1)*(2*samples+1) );
+            shadow /= ((2*samples+1)*(2*samples+1));
             return 1.0 - shadow;
         }
 
@@ -173,8 +174,6 @@ bool Renderer::init() {
             float intensity = light.intensity;
 
             if (light.type == 0) {
-                // light.direction is stored as direction of rays (from light towards scene)
-                // for lighting calculations we need vector from fragment to light -> invert
                 lightDir = normalize(-light.direction);
             } else if (light.type == 1) {
                 vec3 lightVec = light.position - fragPos;
@@ -198,64 +197,44 @@ bool Renderer::init() {
             float spec = pow(max(dot(norm, halfDir), 0.0), shininess);
             vec3 specular = specularStrength * spec * light.color * intensity * attenuation;
             return diffuse + specular;
-         }
+        }
 
-         vec4 getMaterialColor(out float outRoughness) {
+        vec4 getMaterialColor() {
             if (isTerrain == 0) {
                 vec2 flippedUV = vec2(TexCoord.x, 1.0 - TexCoord.y);
                 return texture(diffuseTexture, flippedUV);
             }
 
-            float minMat = min(min(vMaterial1, vMaterial2), vMaterial3);
-            float maxMat = max(max(vMaterial1, vMaterial2), vMaterial3);
-            float avgMat = (vMaterial1 + vMaterial2 + vMaterial3) / 3.0;
-    
-            if (abs(maxMat - minMat) < 0.1) {
-                int matIdx = int(round(avgMat));
-                matIdx = clamp(matIdx, 0, materialCount - 1);
-        
-                // Используем UV scale конкретного материала
-                float uvScale = materialUVScale[matIdx];
-                vec2 scaledUV = TexCoord * (chunkSize / uvScale);
-        
-                vec4 color = texture(materialTextures[matIdx], scaledUV);
-                if (color.r + color.g + color.b < 0.01) {
-                    color = vec4(materialColors[matIdx], 1.0);
-                }
-                outRoughness = materialRoughness[matIdx];
-                return color;
-            }
-    
-            int matIdx1 = int(round(minMat));
-            int matIdx2 = int(round(maxMat));
-    
-            float t = (avgMat - minMat) / (maxMat - minMat);
-            t = clamp(t, 0.0, 1.0);
-    
+            int matIdx1 = int(round(vMaterial1));
+            int matIdx2 = int(round(vMaterial2));
+            float blend = clamp(vMaterial3, 0.0, 1.0);
+
             matIdx1 = clamp(matIdx1, 0, materialCount - 1);
             matIdx2 = clamp(matIdx2, 0, materialCount - 1);
-    
-            // Используем UV scale для каждого материала отдельно
+
             float uvScale1 = materialUVScale[matIdx1];
             float uvScale2 = materialUVScale[matIdx2];
-    
-            vec2 scaledUV1 = TexCoord * (chunkSize / uvScale1);
-            vec2 scaledUV2 = TexCoord * (chunkSize / uvScale2);
-    
-            vec4 color1 = texture(materialTextures[matIdx1], scaledUV1);
-            if (color1.r + color1.g + color1.b < 0.01) {
-                color1 = vec4(materialColors[matIdx1], 1.0);
-            }
-    
-            vec4 color2 = texture(materialTextures[matIdx2], scaledUV2);
-            if (color2.r + color2.g + color2.b < 0.01) {
-                color2 = vec4(materialColors[matIdx2], 1.0);
-            }
-            // interpolate roughness between materials
-            float r1 = materialRoughness[matIdx1];
-            float r2 = materialRoughness[matIdx2];
-            outRoughness = mix(r1, r2, t);
-            return mix(color1, color2, t);
+            vec2 baseUV1 = TexCoord * (chunkSize / uvScale1);
+            vec2 baseUV2 = TexCoord * (chunkSize / uvScale2);
+
+            float noiseScale = 0.25;
+            float offsetStrength = 0.5;
+
+            vec2 worldPos = FragPos.xz;
+            float offsetX = smoothNoise(worldPos * noiseScale + vec2(0.0, 0.0)) * 2.0 - 1.0;
+            float offsetY = smoothNoise(worldPos * noiseScale + vec2(1.0, 2.0)) * 2.0 - 1.0;
+            vec2 offset = vec2(offsetX, offsetY) * offsetStrength;
+
+            vec2 finalUV1 = baseUV1 + offset;
+            vec2 finalUV2 = baseUV2 + offset;
+
+            vec4 col1 = texture(materialTextures[matIdx1], finalUV1);
+            if (col1.r + col1.g + col1.b < 0.01) col1 = vec4(materialColors[matIdx1], 1.0);
+
+            vec4 col2 = texture(materialTextures[matIdx2], finalUV2);
+            if (col2.r + col2.g + col2.b < 0.01) col2 = vec4(materialColors[matIdx2], 1.0);
+
+            return mix(col1, col2, blend);
         }
 
         void main() {
@@ -269,17 +248,10 @@ bool Renderer::init() {
             for (int i = 0; i < numCascades - 1; ++i) {
                 if (ViewDepth > cascadeSplits[i + 1]) cascadeIndex = i + 1;
             }
-
             vec4 fragPosLightSpace = lightSpaceMatrices[cascadeIndex] * vec4(FragPos, 1.0);
             vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
             projCoords = projCoords * 0.5 + 0.5;
-
             float shadowFactor = shadowCalculation(projCoords, cascadeIndex);
-            if (debugShadow == 1) {
-                // Visualize shadow intensity for debugging: dark = in shadow
-                FragColor = vec4(vec3(shadowFactor), 1.0);
-                return;
-            }
 
             vec3 lighting = vec3(0.0);
             float sunDiff = 0.0;
@@ -290,15 +262,26 @@ bool Renderer::init() {
                 lighting += contrib;
             }
 
-            vec3 ambient = ambientStrength * vec3(1.0);
-            //vec3 diffuseColor = texColor.rgb * objectColor;
-            vec3 directLight = (ambient + shadowFactor * lighting) * materialColor.rgb;
+            vec3 sunDir = normalize(-lights[0].direction);
+            float NdotL = dot(norm, sunDir);
+            float slopeFactor = smoothstep(-slopeShadowSmooth, slopeShadowSmooth, NdotL);
+            float slopeShadow = mix(1.0 - slopeShadowStrength, 1.0, slopeFactor);
+
+            vec3 ambient = ambientStrength * lights[0].color;
+            vec3 directLight = (ambient + shadowFactor * lighting * slopeShadow) * materialColor.rgb;
 
             float reflectionStrength = reflectivity * pow(sunDiff, 0.5);
             vec3 incident = normalize(FragPos - viewPos);
             vec3 reflection = reflect(incident, norm);
             vec3 skyReflection = texture(skybox, reflection).rgb;
-            vec3 finalColor = mix(directLight, skyReflection, reflectionStrength);
+            vec3 finalColor = mix(directLight, skyReflection, reflectionStrength); 
+ 
+            vec3 dirToFragment = normalize(FragPos - viewPos);
+            vec3 fogColor = texture(skybox, dirToFragment).rgb * skyColor;
+            float dist = length(viewPos - FragPos);
+            float fogFactor = clamp((dist - fogStart) / (fogEnd - fogStart), 0.0, 1.0);
+            finalColor = mix(finalColor, fogColor, fogFactor);
+
             FragColor = vec4(finalColor, materialColor.a);
 
             //FragColor.rgb = pow(finalColor, vec3(1.0 / gamma));
@@ -310,7 +293,7 @@ bool Renderer::init() {
             //else if (cascadeIndex == 2) FragColor = vec4(0,0,1,1);
             //else FragColor = vec4(1,1,1,1);
             //VIEW DEPTH TEST
-            //float depth = ViewDepth / 100.0f; // нормируем
+            //float depth = ViewDepth / 100.0f; // РЅРѕСЂРјРёСЂСѓРµРј
             //FragColor = vec4(depth, depth, depth, 1.0);
         }
     )";
@@ -342,6 +325,8 @@ bool Renderer::init() {
     shader->setUniform("skybox", 2);
     shader->setUniform("diffuseTexture", 1);
     shader->setUniform("chunkSize", 16.0f);
+    shader->setUniform("slopeShadowStrength", 0.5f);
+    shader->setUniform("slopeShadowSmooth", 0.5f);
 
     //glEnable(GL_FRAMEBUFFER_SRGB);
     glEnable(GL_DEPTH_TEST);
@@ -401,21 +386,27 @@ void Renderer::clear() {
 
 void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, const std::vector<std::shared_ptr<SourceLight>>& lights, float viewDistance, float gamma) {
     if (!shadowMap || !camera || !postProcess) return;
-
+    if (!currentDimension || currentDimension == nullptr) return;
+    
     std::shared_ptr<SourceLight> globalLight;
     bool hasGL = false;
+    short amntLights = 0;
 
-    for (const auto& light : lights) {
-        if (light->type == 0) {
-            if (!hasGL) {
-                globalLight = light;
-                hasGL = true;
-            }
+    for (auto& body : currentDimension->celestialBodies) {
+        if (body->name == currentDimension->mainLightSource) {
+            globalLight = body->sourceLight;
+            hasGL = true;
         }
+        amntLights++;
     }
-    if (!hasGL) return;
 
-    shadowMap->render(objects, *camera, globalLight, viewDistance * 100.0f);
+    if (!hasGL) return;
+    float sunHeight = -globalLight->direction.y;
+    float sunNorm = std::clamp((sunHeight + 1.0f) / 2.0f, 0.0f, 1.0f);
+    float baseShadowDist = viewDistance * 240.0f;
+    float shadowDist = baseShadowDist * (0.3f + 0.7f * sunNorm);
+
+    shadowMap->render(objects, *camera, globalLight, shadowDist);
 
     glViewport(0, 0, width, height);
     glEnable(GL_DEPTH_TEST);
@@ -430,6 +421,14 @@ void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, con
     shader->setUniform("projection", proj);
     shader->setUniform("viewPos", camera->position);
     shader->setUniform("gamma", gamma);
+    shader->setUniform("fogStart", (viewDistance * 170.0f) * currentDimension->fogStart);
+    shader->setUniform("fogEnd", viewDistance * 170.0f);
+    shader->setUniform("skyColor", currentDimension->skyColor);
+    if (currentDimension && currentDimension->skybox) {
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, currentDimension->skybox->getTextureID());
+    }
+
 
     const unsigned int shadowUnitStart = 5;
     shadowMap->bindCascadeTextures(shadowUnitStart);
@@ -450,38 +449,55 @@ void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, con
         shader->setUniform(("cascadeSplits[" + std::to_string(i) + "]").c_str(), distances[i]);
     }
 
-    float cascadeRadii[4] = { 0.5f, 1.0f, 1.5f, 2.0f };
+    float lowSunFactor = 1.0f + (1.0f - sunNorm) * 2.0f;
+    float cascadeRadii[MAX_CASCADES] = { 0.5f, 1.0f, 1.5f};
+    float cascadeBias[MAX_CASCADES] = { 0.005f, 0.002f, 0.001f};
     for (int i = 0; i < MAX_CASCADES; ++i) {
-        shader->setUniform(("cascadeRadii[" + std::to_string(i) + "]").c_str(), cascadeRadii[i]);
-    }
-
-    float cascadeBias[4] = { 0.005f, 0.002f, 0.001f, 0.001f };
-    for (int i = 0; i < MAX_CASCADES; ++i) {
-        shader->setUniform(("cascadeBias[" + std::to_string(i) + "]").c_str(), cascadeBias[i]);
+        float factor = (i >= MAX_CASCADES / 2) ? lowSunFactor : 1.0f;
+        shader->setUniform("cascadeRadii[" + std::to_string(i) + "]", cascadeRadii[i] * factor);
+        shader->setUniform("cascadeBias[" + std::to_string(i) + "]", cascadeBias[i] * factor);
     }
 
     shader->setUniform("numCascades", MAX_CASCADES);
-    shader->setUniform("lightDir", globalLight->direction.x, globalLight->direction.y, globalLight->direction.z);
-    shader->setUniform("debugShadow", 0);
-    shader->setUniform("numLights", (int)lights.size());
+    shader->setUniform("numLights", amntLights);
 
-    short lightNum = 0;
+    std::vector<SourceLight*> activeLights;
+
+    for (auto& body : currentDimension->celestialBodies) {
+        if (body->sourceLight && body->sourceLight->enabled &&
+            body->name == currentDimension->mainLightSource) {
+            activeLights.push_back(body->sourceLight.get());
+            break;
+        }
+    }
+    for (auto& body : currentDimension->celestialBodies) {
+        if (body->sourceLight && body->sourceLight->enabled &&
+            body->name != currentDimension->mainLightSource) {
+            activeLights.push_back(body->sourceLight.get());
+        }
+    }
     for (auto& light : lights) {
-        std::string base = "lights[" + std::to_string(lightNum) + "]";
-        shader->setUniform(base + ".type", light->type);
-        shader->setUniform(base + ".position", light->position);
-        shader->setUniform(base + ".direction", light->direction);
-        shader->setUniform(base + ".color", light->color);
-        shader->setUniform(base + ".intensity", light->intensity);
-        shader->setUniform(base + ".constant", light->constant);
-        shader->setUniform(base + ".linear", light->linear);
-        shader->setUniform(base + ".quadratic", light->quadratic);
+        if (light->enabled) {
+            activeLights.push_back(light.get());
+        }
+    }
 
-        float cutOffRad = light->cutOff * 3.14159f / 180.0f;
-        float outerCutOffRad = light->outerCutOff * 3.14159f / 180.0f;
-        shader->setUniform(base + ".cutOff", cos(cutOffRad));
-        shader->setUniform(base + ".outerCutOff", cos(outerCutOffRad));
-        lightNum++;
+    int numActive = std::min((int)activeLights.size(), MAX_LIGHTS);
+    shader->setUniform("numLights", numActive);
+
+    for (int i = 0; i < numActive; ++i) {
+        const auto& L = activeLights[i];
+        std::string base = "lights[" + std::to_string(i) + "]";
+        shader->setUniform(base + ".type", L->type);
+        shader->setUniform(base + ".position", L->position);
+        shader->setUniform(base + ".direction", L->direction);
+        shader->setUniform(base + ".color", L->color);
+        shader->setUniform(base + ".intensity", L->intensity);
+        shader->setUniform(base + ".constant", L->constant);
+        shader->setUniform(base + ".linear", L->linear);
+        shader->setUniform(base + ".quadratic", L->quadratic);
+        shader->setUniform(base + ".cutOff", cos(L->cutOff * 3.14159f / 180.0f));
+        shader->setUniform(base + ".outerCutOff", cos(L->outerCutOff * 3.14159f / 180.0f));
     }
 
     shader->setUniform("isTerrain", 0);
@@ -509,13 +525,14 @@ void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, con
         shader->setUniform("objectColor", 1.0f, 1.0f, 1.0f);
 
         for (const auto& chunk : chunks) {
-            auto materialSet = chunk->getMaterialSet();
-            if (materialSet) {
-                int count = materialSet->size();
+            if (currentDimension && currentDimension->mergedMaterialSet) {
+                auto globalSet = currentDimension->mergedMaterialSet;
+                int count = globalSet->size();
+                count = std::min(count, 16);
                 shader->setUniform("materialCount", count);
 
-                for (int i = 0; i < count && i < 16; ++i) {
-                    const auto& mat = materialSet->materials[i];
+                for (int i = 0; i < count; ++i) {
+                    const auto& mat = globalSet->materials[i];
                     if (mat->hasTexture && mat->getTextureId() == 0) {
                         mat->loadTexture();
                     }
@@ -537,7 +554,6 @@ void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, con
                     shader->setUniform(uvUniform, mat->uvScale);
                 }
             }
-
             if (chunk->getDiffuseTexture()) {
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, chunk->getDiffuseTexture()->getId());
@@ -547,7 +563,7 @@ void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, con
     }
 
     if (debugEnabled) {
-        debugRenderCascade(0);
+       //debugRenderCascade(0);
     }
 }
 
@@ -606,6 +622,9 @@ void Renderer::debugRenderCascade(int cascadeIndex) const {
 
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, width, height);
+    glUseProgram(0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Vector2 Renderer::getScreenPosition(const Vector3& worldPos) {
@@ -625,10 +644,10 @@ void Renderer::renderLightMask(const SourceLight& light, unsigned int fbo) {
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    if (!light.enableGodRays || light.direction.y < 0.1f) {
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        return;
-    }
+    //if (!light.enableGodRays || light.direction.y < 0.1f) {
+    //    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //    return;
+    //}
 
     Vector3 worldPos = camera->position + light.direction * 1000.0f;
     Vector2 screenPos = getScreenPosition(worldPos);
@@ -638,7 +657,7 @@ void Renderer::renderLightMask(const SourceLight& light, unsigned int fbo) {
         return;
     }
 
-    // Статические переменные внутри метода
+    // РЎС‚Р°С‚РёС‡РµСЃРєРёРµ РїРµСЂРµРјРµРЅРЅС‹Рµ РІРЅСѓС‚СЂРё РјРµС‚РѕРґР°
     static Shader maskShader;
     static unsigned int maskVao = 0, maskVbo = 0;
     static bool maskInit = false;
@@ -684,7 +703,7 @@ void Renderer::renderLightMask(const SourceLight& light, unsigned int fbo) {
 
     float x = screenPos.u * 2.0f - 1.0f;
     float y = screenPos.v * 2.0f - 1.0f;
-    float s = light.raySize;
+    float s = 1;
 
     Matrix4 model = Matrix4::translation(Vector3(x, y, 0)) *
         Matrix4::scale(Vector3(s, s, 1));
