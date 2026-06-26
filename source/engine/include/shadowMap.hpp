@@ -3,7 +3,7 @@
 
 #include "shader.hpp"
 #include "matrix4.hpp"
-#include "object3d.hpp"
+#include "Object3D.hpp"
 #include "chunkManager.hpp"
 #include "camera.hpp"
 #include "vector4.hpp"

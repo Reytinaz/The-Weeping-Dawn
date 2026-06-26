@@ -75,7 +75,7 @@ bool Skybox::load(const std::vector<std::string>& faces, std::vector<std::shared
 
         uniform bool cloudsEnabled;
         uniform sampler3D noiseTexture;
-        uniform float cloudWindX, cloudWindY, cloudWindZ; // можно оставить cloudWind
+        uniform float cloudWindX, cloudWindY, cloudWindZ;
         uniform float cloudTime;
         uniform float cloudScale;
         uniform float cloudBottom, cloudTop, cloudDensity, cloudCover;

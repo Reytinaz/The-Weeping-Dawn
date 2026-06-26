@@ -1,7 +1,7 @@
 #ifndef PHYSICS_HPP
 #define PHYSICS_HPP
 
-#include "object3d.hpp"
+#include "Object3D.hpp"
 #include "chunkManager.hpp"
 
 class Physics {

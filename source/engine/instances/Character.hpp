@@ -1,7 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include "object3d.hpp"
+#include "Object3D.hpp"
 #include "camera.hpp"
 #include "physics.hpp"
 

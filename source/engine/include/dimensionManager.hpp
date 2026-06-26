@@ -2,7 +2,7 @@
 #define DIMENSION_MANAGEMENT
 
 #include "chunkManager.hpp"
-#include "object3d.hpp"
+#include "Object3D.hpp"
 #include "skybox.hpp"
 #include "physics.hpp"
 #include "unordered_map"

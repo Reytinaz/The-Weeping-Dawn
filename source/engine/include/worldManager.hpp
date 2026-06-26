@@ -3,7 +3,7 @@
 
 #include "nlohmann/json.hpp"
 #include "physics.hpp"
-#include "object3d.hpp"
+#include "Object3D.hpp"
 #include "Container.hpp"
 #include "fstream"
 #include "dimensionManager.hpp"

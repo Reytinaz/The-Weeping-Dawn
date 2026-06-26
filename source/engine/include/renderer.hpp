@@ -2,7 +2,7 @@
 #define RENDERER_HPP
 
 #include "camera.hpp"
-#include "object3d.hpp"
+#include "Object3D.hpp"
 #include "SourceLight.hpp"
 #include "shader.hpp"
 #include "shadowMap.hpp"

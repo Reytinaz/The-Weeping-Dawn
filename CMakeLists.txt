@@ -3,6 +3,10 @@ project(TheWeepingDawn VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(GLAD_SRC "${CMAKE_SOURCE_DIR}/source/include/glad.c")
+if(NOT EXISTS "${GLAD_SRC}")
+    message(FATAL_ERROR "glad.c not found at ${GLAD_SRC}. Please download GLAD and place the file there.")
+endif()
 
 # ── SFML (ищется в системе) ──
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
@@ -17,6 +21,7 @@ file(GLOB_RECURSE ENGINE_SRC
 )
 list(APPEND ENGINE_SRC "source/include/glad.c")
 list(APPEND ENGINE_SRC "main.cpp")
+list(APPEND ENGINE_SRC "${GLAD_SRC}")
 add_executable(${PROJECT_NAME} ${ENGINE_SRC})
 
 # ── Заголовки ──
