@@ -33,7 +33,29 @@ jobs:
       if: runner.os == 'Windows' && steps.cache-sfml-win.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip -OutFile sfml.zip
+        $urls = @(
+          "https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip",
+          "https://github.com/SFML/SFML/releases/download/3.1.0/SFML-3.1.0-windows-vc17-64-bit.zip"
+        )
+        $downloaded = $false
+        foreach ($url in $urls) {
+          Write-Host "Trying to download SFML from $url"
+          for ($i = 0; $i -lt 3; $i++) {
+            try {
+              Invoke-WebRequest -Uri $url -OutFile sfml.zip -TimeoutSec 120 -ErrorAction Stop
+              $downloaded = $true
+              break
+            } catch {
+              Write-Host "Attempt $($i+1) failed: $_"
+              Start-Sleep -Seconds 5
+            }
+          }
+          if ($downloaded) { break }
+        }
+        if (-not $downloaded) {
+          Write-Error "Could not download SFML after several attempts"
+          exit 1
+        }
         Expand-Archive sfml.zip -DestinationPath $env:TEMP\sfml_extracted -Force
         $inner = Get-ChildItem -Path $env:TEMP\sfml_extracted -Directory | Select-Object -First 1
         New-Item -ItemType Directory -Force -Path ${{ github.workspace }}\sfml

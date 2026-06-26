@@ -6,8 +6,6 @@
 #include "string"
 #include "vector"
 #include "cstring"
-#include <corecrt_math_defines.h>
-
 class Vector3 {
 public:
     float x, y, z;
