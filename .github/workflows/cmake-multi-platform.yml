@@ -50,7 +50,7 @@ jobs:
       if: runner.os == 'Linux' && steps.cache-sfml-linux.outputs.cache-hit != 'true'
       run: |
         wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz
-        tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
+        mkdir -p tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
 
     # ─── Настройка CMake и сборка ─────────────────────────────
     - name: Configure CMake
