@@ -1,4 +1,4 @@
-#include "Instance.hpp"
+#include "instance.hpp"
 
 Instance::Instance(const std::string& name, const std::string& className)
     : name(name), className(className) {}

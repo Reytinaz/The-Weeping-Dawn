@@ -1,4 +1,4 @@
-﻿#include "character.hpp"
+﻿#include "Character.hpp"
 
 Character::Character(const std::string& name)
     : Object3D(name)
