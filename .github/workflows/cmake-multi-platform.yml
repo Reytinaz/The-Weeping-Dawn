@@ -30,7 +30,7 @@ jobs:
         key: sfml-3.1.0-windows-vc17
 
     - name: Download SFML (Windows)
-      if: runner.os == 'Windows' && steps.cache-sfml-win.outputs.cache-hit != 'true'
+      if: runner.os == 'Windows' # && steps.cache-sfml-win.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         $urls = @(
@@ -66,7 +66,9 @@ jobs:
     # ─── SFML 3.1.0 (Linux) ───────────────────────────────────
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
-      run: sudo apt-get update && sudo apt-get install -y build-essential cmake libx11-dev libfreetype6-dev libharfbuzz-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libsfml-dev libharfbuzz-dev
 
     - name: Cache SFML (Linux)
       if: runner.os == 'Linux'

@@ -4,15 +4,20 @@ project(TheWeepingDawn VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# ── GLAD ──
 set(GLAD_SRC "${CMAKE_SOURCE_DIR}/source/include/glad.cpp")
 if(NOT EXISTS "${GLAD_SRC}")
     message(FATAL_ERROR "glad.cpp not found at ${GLAD_SRC}. Please generate GLAD and place the file there.")
 endif()
 
-set(SFML_STATIC_LIBRARIES TRUE)
+# ── SFML ──
+if(WIN32)
+    set(SFML_STATIC_LIBRARIES TRUE)   # только Windows статика
+endif()
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
 find_package(OpenGL REQUIRED)
 
+# ── Исходные файлы ──
 file(GLOB_RECURSE ENGINE_SRC
     "source/engine/src/*.cpp"
     "source/engine/instances/*.cpp"
@@ -21,6 +26,7 @@ list(APPEND ENGINE_SRC "main.cpp")
 list(APPEND ENGINE_SRC "${GLAD_SRC}")
 add_executable(${PROJECT_NAME} ${ENGINE_SRC})
 
+# ── Заголовки ──
 target_include_directories(${PROJECT_NAME} PRIVATE
     source/engine/include
     source/engine/instances
@@ -28,7 +34,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${SFML_INCLUDE_DIR}
     ${OPENGL_INCLUDE_DIR}
 )
-target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
+
+# ── Макрос для статической линковки (только если включена) ──
+if(WIN32)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
+endif()
+
+# ── Линковка SFML ──
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SFML::Graphics
     SFML::Window
@@ -36,20 +48,16 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenGL::GL
 )
 
+# ── Платформенные зависимости ──
 if(WIN32)
+    # Только системные библиотеки Windows.
+    # freetype, flac, ogg, vorbis, openal32 НЕ НУЖНЫ – они уже внутри SFML.
     target_link_libraries(${PROJECT_NAME} PRIVATE
         opengl32
-        freetype
         winmm
         gdi32
-        flac
         comctl32
-        vorbisenc
-        vorbisfile
-        vorbis
-        ogg
         ws2_32
-        openal32
         user32
         advapi32
         shell32
@@ -76,6 +84,7 @@ else()
     # )
 endif()
 
+# ── Копирование ресурсов ──
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/assets
