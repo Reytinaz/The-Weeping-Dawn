@@ -36,6 +36,7 @@ jobs:
         Invoke-WebRequest -Uri $url -OutFile sfml.zip
         Expand-Archive sfml.zip -DestinationPath ${{ github.workspace }}/sfml -Force
         Remove-Item sfml.zip
+        New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\sfml\include\freetype2"
 
     - name: Cache SFML (Linux)
       if: runner.os == 'Linux'
