@@ -24,7 +24,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 if(WIN32)
-    set(SFML_ROOT "${CMAKE_SOURCE_DIR}/sfml")
     set(SFML_ROOT "${CMAKE_SOURCE_DIR}/source/include/SFML-3.1.0")
     set(LIBS_DIR "${CMAKE_SOURCE_DIR}/source/libraries")
     target_include_directories(${PROJECT_NAME} PRIVATE "${SFML_ROOT}/include")
