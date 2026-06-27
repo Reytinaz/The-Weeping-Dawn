@@ -31,7 +31,6 @@ if(WIN32)
     target_link_directories(${PROJECT_NAME} PRIVATE
         "${SFML_ROOT}/lib"
         "${SFML_ROOT}/extlibs"
-        "${LIBS_DIR}"
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE
         sfml-graphics-s

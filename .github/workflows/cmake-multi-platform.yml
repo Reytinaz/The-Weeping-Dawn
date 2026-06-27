@@ -64,14 +64,14 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/sfml
-        key: sfml-3.1.0-linux-gcc-64
+        key: sfml-3.1.0-linux-gcc-32
 
     - name: Download SFML (Linux)
       if: runner.os == 'Linux' && steps.cache-sfml-linux.outputs.cache-hit != 'true'
       run: |
-        wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz
+        wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-32-bit.tar.gz
         mkdir -p ${{ github.workspace }}/sfml
-        tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
+        tar -xzf SFML-3.1.0-linux-gcc-32-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
 
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
