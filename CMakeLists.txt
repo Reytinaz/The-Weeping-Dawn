@@ -26,13 +26,22 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 if(WIN32)
     set(SFML_ROOT "${CMAKE_SOURCE_DIR}/source/include/SFML-3.1.0")
     set(LIBS_DIR "${CMAKE_SOURCE_DIR}/source/libraries")
+
     target_include_directories(${PROJECT_NAME} PRIVATE "${SFML_ROOT}/include")
     target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE _MT)
+
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        $<$<CONFIG:Release>:/MT>
+        $<$<CONFIG:Debug>:/MTd>
+    )
+
     target_link_directories(${PROJECT_NAME} PRIVATE
         "${SFML_ROOT}/extlibs"
         "${SFML_ROOT}/lib"
         "${LIBS_DIR}"
     )
+
     target_link_libraries(${PROJECT_NAME} PRIVATE
         sfml-graphics-s
         sfml-window-s
@@ -52,6 +61,11 @@ if(WIN32)
         ogg
         ws2_32
         openal32
+        user32
+        advapi32
+        shell32
+        libcmt
+        oldnames
     )
 elseif(APPLE)
     find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
