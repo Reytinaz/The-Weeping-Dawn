@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)\source\include;$(SolutionDir)\source\engine\include;$(SolutionDir)\source\engine\src;$(SolutionDir)\source\engine\instances;$(SolutionDir)\source\engine\vsm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\source\libraries;D:\Reytinaz\Personal Stuff\GitHub\The Weeping Dawn\source\include\SFML-3.1.0\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\source\libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -109,6 +109,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)\source\engine\src;$(SolutionDir)\source\engine\include;$(SolutionDir)\source\engine\instances;$(SolutionDir)\source\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
