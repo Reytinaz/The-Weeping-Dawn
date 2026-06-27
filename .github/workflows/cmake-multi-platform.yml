@@ -20,9 +20,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # ─── SFML для Windows ─────────────────────────────────────
-    - name: Download SFML (Windows)
+    # ─── Windows: скачиваем и кэшируем SFML 3.1.0 ────────────────
+    - name: Cache SFML (Windows)
       if: runner.os == 'Windows'
+      id: cache-sfml-win
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/sfml
+        key: sfml-3.1.0-windows-vc17
+
+    - name: Download SFML (Windows)
+      if: runner.os == 'Windows' && steps.cache-sfml-win.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         $url = "https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip"
@@ -30,30 +38,46 @@ jobs:
         Expand-Archive sfml.zip -DestinationPath ${{ github.workspace }}/sfml -Force
         Remove-Item sfml.zip
 
-    # ─── SFML для Linux ──────────────────────────────────────
-    - name: Download SFML (Linux)
+    # ─── Linux: скачиваем SFML 3.1.0 (готовые бинарники) ─────────
+    - name: Cache SFML (Linux)
       if: runner.os == 'Linux'
-      shell: bash
+      id: cache-sfml-linux
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/sfml
+        key: sfml-3.1.0-linux-gcc-64
+
+    - name: Download SFML (Linux)
+      if: runner.os == 'Linux' && steps.cache-sfml-linux.outputs.cache-hit != 'true'
+      run: |
+        wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz
+        mkdir -p ${{ github.workspace }}/sfml
+        tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
+
+    # ─── Установка системных зависимостей для Linux ───────────────
+    - name: Install Linux dependencies
+      if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libx11-dev libharfbuzz-dev   # зависимости SFML
-        wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz
-        tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
-        rm SFML-3.1.0-linux-gcc-64-bit.tar.gz
+        sudo apt-get install -y libx11-dev libharfbuzz-dev libfreetype6-dev
 
-    # ─── Конфигурация CMake ──────────────────────────────────
+    # ─── Конфигурация CMake (единый шаг) ─────────────────────────
     - name: Configure CMake
       shell: pwsh
       run: |
-        $sfmlDir = Join-Path ${{ github.workspace }} "sfml/lib/cmake/SFML"
+        if ($env:RUNNER_OS -eq 'Windows') {
+            $sfmlDir = "${{ github.workspace }}\sfml\lib\cmake\SFML"
+        } else {
+            $sfmlDir = "${{ github.workspace }}/sfml/lib/cmake/SFML"
+        }
         cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="$sfmlDir"
 
-    # ─── Сборка ───────────────────────────────────────────────
+    # ─── Сборка ──────────────────────────────────────────────────
     - name: Build
       shell: pwsh
       run: cmake --build build --config ${{ matrix.build_type }}
 
-    # ─── Артефакты ────────────────────────────────────────────
+    # ─── Артефакты ───────────────────────────────────────────────
     - name: Upload Windows artifact
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
