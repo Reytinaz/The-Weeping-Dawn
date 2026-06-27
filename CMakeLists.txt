@@ -30,8 +30,7 @@ if(WIN32)
     target_include_directories(${PROJECT_NAME} PRIVATE "${SFML_ROOT}/include")
     target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
     target_link_directories(${PROJECT_NAME} PRIVATE
-    #    "${SFML_ROOT}/lib"
-    #    "${SFML_ROOT}/extlibs"
+        "${SFML_ROOT}/extlibs"
         "${SFML_ROOT}/lib"
         "${LIBS_DIR}"
     )
@@ -46,6 +45,7 @@ if(WIN32)
         winmm
         gdi32
         flac
+        harfbuzz
         comctl32
         vorbisenc
         vorbisfile

@@ -15,13 +15,15 @@ jobs:
 
     - name: Configure CMake (Win32)
       shell: pwsh
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -A Win32
+      run: |
+        Remove-Item -Recurse -Force build -ErrorAction SilentlyContinue
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -A Win32
 
     - name: Build
       shell: pwsh
       run: cmake --build build --config Release
 
-    - name: Upload artifact
+    - name: Upload Windows artifact
       uses: actions/upload-artifact@v4
       with:
         name: TheWeepingDawn-Windows
@@ -35,18 +37,32 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Install dependencies
+    - name: Cache SFML (Linux)
+      id: cache-sfml-linux
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/sfml
+        key: sfml-3.1.0-linux-gcc-64
+
+    - name: Download SFML (Linux)
+      if: steps.cache-sfml-linux.outputs.cache-hit != 'true'
+      run: |
+        wget -q https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz
+        mkdir -p ${{ github.workspace }}/sfml
+        tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
+
+    - name: Install Linux dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsfml-dev libharfbuzz-dev
+        sudo apt-get install -y libx11-dev libharfbuzz-dev libfreetype6-dev libgl1-mesa-dev
 
-    - name: Configure CMake
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+    - name: Configure CMake (Linux)
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DSFML_DIR="${{ github.workspace }}/sfml/lib/cmake/SFML"
 
     - name: Build
       run: cmake --build build --config Release
 
-    - name: Upload artifact
+    - name: Upload Linux artifact
       uses: actions/upload-artifact@v4
       with:
         name: TheWeepingDawn-Linux
