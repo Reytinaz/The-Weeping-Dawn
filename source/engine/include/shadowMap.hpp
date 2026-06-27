@@ -34,7 +34,7 @@ public:
 
     const std::vector<Cascade>& getCascades() const { return cascades; }
     const std::vector<float>& getCascadeDistances() const { return cascadeDistances; }
-    std::vector<Matrix4>& getLightMatrices() const {
+    std::vector<Matrix4> getLightMatrices() const {
         std::vector<Matrix4> matrices;
         matrices.resize(MAX_CASCADES);
         for (int i = 0; i < MAX_CASCADES; ++i)

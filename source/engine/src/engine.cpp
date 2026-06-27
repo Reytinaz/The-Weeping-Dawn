@@ -1,9 +1,11 @@
 ﻿#include "targetArch.hpp"
 #include "engine.hpp"
 #include "glad.h"
-#include "basetsd.h"
-#include "processthreadsapi.h"
 #include "sstream"
+#ifdef _WIN32
+	#include <basetsd.h>
+	#include <processthreadsapi.h>
+#endif
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -642,25 +644,33 @@ std::shared_ptr<Object3D> Engine::getModel(const std::string& path) {
 	return nullptr;
 }
 size_t Engine::getAvailableStackSpace() {
-	ULONG_PTR lowLimit, highLimit;
-	GetCurrentThreadStackLimits(&lowLimit, &highLimit);
-	int stackVar;
-	ULONG_PTR currentStackPtr = reinterpret_cast<ULONG_PTR>(&stackVar);
+	#ifdef _WIN32
+		ULONG_PTR lowLimit, highLimit;
+		GetCurrentThreadStackLimits(&lowLimit, &highLimit);
+		int stackVar;
+		ULONG_PTR currentStackPtr = reinterpret_cast<ULONG_PTR>(&stackVar);
 
-	size_t remainingSpace = currentStackPtr - lowLimit;
+		size_t remainingSpace = currentStackPtr - lowLimit;
 
-	if (currentStackPtr < lowLimit || currentStackPtr > highLimit) {
-		std::cout << "Warning: Stack pointer is outside the expected limits" << std::endl;
-	}
+		if (currentStackPtr < lowLimit || currentStackPtr > highLimit) {
+			std::cout << "Warning: Stack pointer is outside the expected limits" << std::endl;
+		}
 
-	return remainingSpace;
+		return remainingSpace;
+	#else
+		return 0;
+	#endif
 }
 size_t Engine::getMemoryUsageBytes() const {
-	PROCESS_MEMORY_COUNTERS pmc;
-	if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-		return pmc.WorkingSetSize;   // физическая память процесса (байт)
-	}
-	return 0;
+	#ifdef _WIN32
+		PROCESS_MEMORY_COUNTERS pmc;
+		if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
+			return pmc.WorkingSetSize;
+		}
+		return 0;
+	#else
+		return 0;
+	#endif
 }
 const float Engine::getDeltaTime() const {
 	return deltaTime;
