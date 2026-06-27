@@ -36,7 +36,6 @@ static void updateWorldsList(Engine& engine, sf::Font& globalFont) {
 }
 
 int main(int argc, char* argv[]) {
-	std::filesystem::current_path(std::filesystem::path(argv[0]).parent_path());
 	Engine engine;
 	sf::Font globalFont = engine.loadFont("assets/fonts/tuffy.ttf");
 	Renderer& renderer = engine.getRenderer();
