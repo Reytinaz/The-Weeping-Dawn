@@ -25,11 +25,15 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 if(WIN32)
     set(SFML_ROOT "${CMAKE_SOURCE_DIR}/sfml")
+    set(SFML_ROOT "${CMAKE_SOURCE_DIR}/source/include/SFML-3.1.0")
+    set(LIBS_DIR "${CMAKE_SOURCE_DIR}/source/libraries")
     target_include_directories(${PROJECT_NAME} PRIVATE "${SFML_ROOT}/include")
     target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
     target_link_directories(${PROJECT_NAME} PRIVATE
+    #    "${SFML_ROOT}/lib"
+    #    "${SFML_ROOT}/extlibs"
         "${SFML_ROOT}/lib"
-        "${SFML_ROOT}/extlibs"
+        "${LIBS_DIR}"
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE
         sfml-graphics-s
