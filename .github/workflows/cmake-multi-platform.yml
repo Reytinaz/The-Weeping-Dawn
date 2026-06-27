@@ -66,10 +66,7 @@ jobs:
     # ─── SFML 3.1.0 (Linux) ───────────────────────────────────
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libx11-dev libxrandr-dev libudev-dev libgl1-mesa-dev \
-                                libfreetype6-dev libflac-dev libogg-dev libvorbis-dev libopenal-dev
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake libx11-dev libfreetype6-dev libharfbuzz-dev
 
     - name: Cache SFML (Linux)
       if: runner.os == 'Linux'
