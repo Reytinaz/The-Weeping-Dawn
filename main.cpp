@@ -2,6 +2,7 @@
 #include "targetArch.hpp"
 #include "engine.hpp"
 
+using namespace std;
 static bool mouseUnlocked = false;
 static void updateWorldsList(Engine& engine, sf::Font& globalFont) {
 	engine.scene.interface->findChild("MenuUI")->visible = false;
