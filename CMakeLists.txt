@@ -29,11 +29,10 @@ if(WIN32)
 
     target_include_directories(${PROJECT_NAME} PRIVATE "${SFML_ROOT}/include")
     target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE _MT)
 
     target_compile_options(${PROJECT_NAME} PRIVATE
-        $<$<CONFIG:Release>:/MT>
-        $<$<CONFIG:Debug>:/MTd>
+        $<$<CONFIG:Release>:/MD>
+        $<$<CONFIG:Debug>:/MDd>
     )
 
     target_link_directories(${PROJECT_NAME} PRIVATE
@@ -64,8 +63,9 @@ if(WIN32)
         user32
         advapi32
         shell32
-        libcmt
-        oldnames
+
+        msvcrt
+        msvcprt
     )
 elseif(APPLE)
     find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
