@@ -293,7 +293,7 @@ bool Renderer::init() {
             //else if (cascadeIndex == 2) FragColor = vec4(0,0,1,1);
             //else FragColor = vec4(1,1,1,1);
             //VIEW DEPTH TEST
-            //float depth = ViewDepth / 100.0f; // нормируем
+            //float depth = ViewDepth / 100.0f;
             //FragColor = vec4(depth, depth, depth, 1.0);
         }
     )";

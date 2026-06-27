@@ -17,26 +17,28 @@ namespace {
 	}
 }
 
-LRESULT CALLBACK Engine::SubclassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam,
-	UINT_PTR subclassId, DWORD_PTR refData) {
-	Engine* engine = (Engine*)refData;
-	switch (msg) {
-	case WM_SYSCOMMAND:
-		if (wParam == SC_RESTORE || wParam == SC_MINIMIZE)
+#ifdef _WIN32
+	LRESULT CALLBACK Engine::SubclassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam,
+		UINT_PTR subclassId, DWORD_PTR refData) {
+		Engine* engine = (Engine*)refData;
+		switch (msg) {
+		case WM_SYSCOMMAND:
+			if (wParam == SC_RESTORE || wParam == SC_MINIMIZE)
+				return 0;
+			break;
+		case WM_NCLBUTTONDOWN:
+			if (wParam == HTCAPTION)
+				return 0;
+			break;
+		case WM_SIZING:
+			return TRUE;
+		case WM_CLOSE:
+			engine->window->close();
 			return 0;
-		break;
-	case WM_NCLBUTTONDOWN:
-		if (wParam == HTCAPTION)
-			return 0;
-		break;
-	case WM_SIZING:
-		return TRUE;
-	case WM_CLOSE:
-		engine->window->close();
-		return 0;
+		}
+		return DefSubclassProc(hwnd, msg, wParam, lParam);
 	}
-	return DefSubclassProc(hwnd, msg, wParam, lParam);
-}
+#endif
 
 static void renderBoundingBox(const std::shared_ptr<Object3D>& obj, const Camera& camera) {
 	if (!obj) return;
@@ -127,10 +129,16 @@ void Engine::initVariables() {
 }
 
 void Engine::initWindow() {
-	RECT workArea;
-	SystemParametersInfo(SPI_GETWORKAREA, 0, &workArea, 0);
-	sf::Vector2u winSize(workArea.right - workArea.left, workArea.bottom - workArea.top);
-	sf::Vector2i winPos(workArea.left, workArea.top);
+	sf::Vector2u winSize;
+
+	#ifdef _WIN32
+		RECT workArea;
+		SystemParametersInfo(SPI_GETWORKAREA, 0, &workArea, 0);
+		winSize = sf::Vector2u(workArea.right - workArea.left, workArea.bottom - workArea.top);
+		sf::Vector2i winPos(workArea.left, workArea.top);
+	#else
+		winSize = sf::Vector2u(vidMode.getDesktopMode().size.x, vidMode.getDesktopMode().size.y);
+	#endif
 
 	window = new sf::RenderWindow(sf::VideoMode(winSize), "The Weeping Dawn",
 		sf::Style::Default,
@@ -204,11 +212,15 @@ Engine::~Engine() {
 	for (auto& t : threads) {
 		if (t.joinable()) t.join();
 	}
-	if (window) {
-		HWND hwnd = window->getNativeHandle();
-		RemoveWindowSubclass(hwnd, SubclassProc, SubclassId);
+	#ifdef _WIN32
+		if (window) {
+			HWND hwnd = window->getNativeHandle();
+			RemoveWindowSubclass(hwnd, SubclassProc, SubclassId);
+			delete window;
+		}
+	#else
 		delete window;
-	}
+	#endif
 	delete renderer;
 }
 
@@ -396,7 +408,6 @@ void Engine::logic() {
 }
 
 void Engine::createThread(const std::function<void(Engine& engine)>& func) {
-	//std::thread(func, std::ref(*this)).detach();
 	threads.emplace_back([this, func] { func(*this); });
 }
 

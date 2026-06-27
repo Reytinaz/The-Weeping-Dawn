@@ -33,7 +33,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="source\include\glad.c">
+    <ClCompile Include="source\include\glad.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="source\engine\instances\Button.cpp">

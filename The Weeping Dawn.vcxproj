@@ -174,7 +174,7 @@
     <ClCompile Include="source\engine\src\vector3.cpp" />
     <ClCompile Include="source\engine\src\vector4.cpp" />
     <ClCompile Include="source\engine\src\worldManager.cpp" />
-    <ClCompile Include="source\include\glad.c" />
+    <ClCompile Include="source\include\glad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\engine\include\biome.hpp" />

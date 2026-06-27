@@ -97,7 +97,7 @@ jobs:
         mkdir -p ${{ github.workspace }}/sfml
         tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
 
-    # ─── Конфигурация CMake ───────────────────────────────────
+    # ─── Configuration CMake ───────────────────────────────────
     - name: Configure CMake (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
@@ -108,13 +108,12 @@ jobs:
       shell: bash
       run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="${{ github.workspace }}/sfml/lib/cmake/SFML"
 
-    # ─── Сборка ───────────────────────────────────────────────
+    # ─── Build ───────────────────────────────────────────────
     - name: Build (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
         cmake --build build --config ${{ matrix.build_type }}
-        # Копируем DLL из SFML и зависимостей (если есть extlibs/bin)
         if (Test-Path "$env:GITHUB_WORKSPACE\sfml\bin") {
           Copy-Item -Path "$env:GITHUB_WORKSPACE\sfml\bin\*" -Destination "build\${{ matrix.build_type }}" -Recurse -Force
         }
@@ -127,7 +126,7 @@ jobs:
       shell: bash
       run: cmake --build build --config ${{ matrix.build_type }}
 
-    # ─── Артефакты ────────────────────────────────────────────
+    # ─── Artifacts ────────────────────────────────────────────
     - name: Upload Windows artifact
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
