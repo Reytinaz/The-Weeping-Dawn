@@ -52,7 +52,8 @@ void SceneManager::renderInterface(sf::RenderWindow& window) const {
         [](std::shared_ptr<Instance> a, std::shared_ptr<Instance> b) {
             if (std::dynamic_pointer_cast<InstanceUI>(a) && std::dynamic_pointer_cast<InstanceUI>(b)) {
                 return std::dynamic_pointer_cast<InstanceUI>(a)->zIndex < std::dynamic_pointer_cast<InstanceUI>(b)->zIndex;
-        }
+            }
+            else return false;
     });
 
 

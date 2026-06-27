@@ -133,8 +133,9 @@ jobs:
       with:
         name: TheWeepingDawn-Windows
         path: |
-          build/${{ matrix.build_type }}/TheWeepingDawn.exe
-          build/${{ matrix.build_type }}/*.dll
+          # build/${{ matrix.build_type }}/TheWeepingDawn.exe
+          # build/${{ matrix.build_type }}/*.dll
+          TheWeepingDawn.exe
           assets/
 
     - name: Upload Linux artifact
@@ -143,5 +144,6 @@ jobs:
       with:
         name: TheWeepingDawn-Linux
         path: |
-          build/TheWeepingDawn
+          #build/TheWeepingDawn
+          TheWeepingDawn
           assets/

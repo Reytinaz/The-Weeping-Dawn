@@ -4,6 +4,7 @@ project(TheWeepingDawn VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GLAD_SRC "${CMAKE_SOURCE_DIR}/source/include/glad.cpp")
+set(SFML_STATIC_LIBRARIES TRUE)
 if(NOT EXISTS "${GLAD_SRC}")
     message(FATAL_ERROR "glad.c not found at ${GLAD_SRC}. Please download GLAD and place the file there.")
 endif()
@@ -26,14 +27,12 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${SFML_INCLUDE_DIR}
     ${OPENGL_INCLUDE_DIR}
 )
-
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    SFML::Graphics
-    SFML::Window
-    SFML::System
+    SFML::Graphics-s
+    SFML::Window-s
+    SFML::System-s
     OpenGL::GL
 )
-
 
 if(WIN32)
     target_link_libraries(${PROJECT_NAME} PRIVATE comctl32)

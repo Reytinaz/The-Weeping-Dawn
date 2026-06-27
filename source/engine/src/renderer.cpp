@@ -496,8 +496,8 @@ void Renderer::render(const std::vector<std::shared_ptr<Object3D>>& objects, con
         shader->setUniform(base + ".constant", L->constant);
         shader->setUniform(base + ".linear", L->linear);
         shader->setUniform(base + ".quadratic", L->quadratic);
-        shader->setUniform(base + ".cutOff", cos(L->cutOff * 3.14159f / 180.0f));
-        shader->setUniform(base + ".outerCutOff", cos(L->outerCutOff * 3.14159f / 180.0f));
+        shader->setUniform(base + ".cutOff", static_cast<float>(cos(L->cutOff * 3.14159f / 180.0f)));
+        shader->setUniform(base + ".outerCutOff", static_cast<float>(cos(L->outerCutOff * 3.14159f / 180.0f)));
     }
 
     shader->setUniform("isTerrain", 0);
