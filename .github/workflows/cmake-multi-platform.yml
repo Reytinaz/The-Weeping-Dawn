@@ -26,16 +26,16 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/sfml
-        key: sfml-3.1.0-windows-vc17-x64
+        key: sfml-3.1.0-windows-vc17-32bit
 
     - name: Download SFML (Windows)
       if: runner.os == 'Windows' && steps.cache-sfml-win.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         $urls = @(
-                  "https://github.com/SFML/SFML/releases/download/3.1.0/SFML-3.1.0-windows-vc17-64-bit.zip",
-                  "https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip"
-                )
+          "https://github.com/SFML/SFML/releases/download/3.1.0/SFML-3.1.0-windows-vc17-32-bit.zip",
+          "https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-32-bit.zip"
+        )
         $downloaded = $false
         foreach ($url in $urls) {
           Write-Host "Trying to download SFML from $url"
@@ -57,7 +57,6 @@ jobs:
         }
         Expand-Archive sfml.zip -DestinationPath ${{ github.workspace }}/sfml -Force
         Remove-Item sfml.zip
-        New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\sfml\include\freetype2"
 
     - name: Cache SFML (Linux)
       if: runner.os == 'Linux'
