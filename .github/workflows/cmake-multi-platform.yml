@@ -20,24 +20,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Cache SFML (Windows)
-      if: runner.os == 'Windows'
-      id: cache-sfml-win
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/sfml
-        key: sfml-3.1.0-windows-vc17
-
-    - name: Download SFML (Windows)
-      if: runner.os == 'Windows' && steps.cache-sfml-win.outputs.cache-hit != 'true'
-      shell: pwsh
-      run: |
-        $url = "https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip"
-        Invoke-WebRequest -Uri $url -OutFile sfml.zip
-        Expand-Archive sfml.zip -DestinationPath ${{ github.workspace }}/sfml -Force
-        Remove-Item sfml.zip
-        New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\sfml\include\freetype2"
-
     - name: Cache SFML (Linux)
       if: runner.os == 'Linux'
       id: cache-sfml-linux
@@ -63,26 +45,14 @@ jobs:
       shell: pwsh
       run: |
         if ($env:RUNNER_OS -eq 'Windows') {
-            $sfmlDir = "${{ github.workspace }}\sfml\lib\cmake\SFML"
+            cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         } else {
-            $sfmlDir = "${{ github.workspace }}/sfml/lib/cmake/SFML"
+            cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="${{ github.workspace }}/sfml/lib/cmake/SFML"
         }
-        cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="$sfmlDir"
 
     - name: Build
       shell: pwsh
       run: cmake --build build --config ${{ matrix.build_type }}
-
-    - name: Prepare Windows artifact
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: |
-        Copy-Item -Path "build\${{ matrix.build_type }}\TheWeepingDawn.exe" -Destination . -Force
-
-    - name: Prepare Linux artifact
-      if: runner.os == 'Linux'
-      run: |
-        cp build/TheWeepingDawn .
 
     - name: Upload Windows artifact
       if: runner.os == 'Windows'
@@ -90,7 +60,7 @@ jobs:
       with:
         name: TheWeepingDawn-Windows
         path: |
-          TheWeepingDawn.exe
+          build/Release/TheWeepingDawn.exe
           assets/
 
     - name: Upload Linux artifact
@@ -99,5 +69,5 @@ jobs:
       with:
         name: TheWeepingDawn-Linux
         path: |
-          TheWeepingDawn
+          build/TheWeepingDawn
           assets/
