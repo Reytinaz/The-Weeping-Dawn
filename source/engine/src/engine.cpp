@@ -416,7 +416,7 @@ std::filesystem::path Engine::getExecutablePath() {
 			return std::filesystem::path(path).parent_path();
 		}
 	#endif
-	return std::filesystem::current_path(); // fallback
+	return std::filesystem::current_path();
 }
 
 void Engine::createThread(const std::function<void(Engine& engine)>& func) {

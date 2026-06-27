@@ -52,9 +52,6 @@ if(WIN32)
         ogg
         ws2_32
         openal32
-        user32
-        advapi32
-        shell32
     )
 elseif(APPLE)
     find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
