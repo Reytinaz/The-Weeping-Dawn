@@ -29,7 +29,7 @@ jobs:
         name: TheWeepingDawn-Windows
         path: |
           build/Release/TheWeepingDawn.exe
-          assets/
+          build/Release/assets/
 
   build-linux:
     runs-on: ubuntu-latest
@@ -68,4 +68,4 @@ jobs:
         name: TheWeepingDawn-Linux
         path: |
           build/TheWeepingDawn
-          assets/
+          build/assets/
