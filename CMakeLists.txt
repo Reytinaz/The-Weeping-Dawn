@@ -36,9 +36,9 @@ if(WIN32)
     )
 
     target_link_directories(${PROJECT_NAME} PRIVATE
+        "${LIBS_DIR}"
         "${SFML_ROOT}/extlibs"
         "${SFML_ROOT}/lib"
-        "${LIBS_DIR}"
     )
 
     target_link_libraries(${PROJECT_NAME} PRIVATE
