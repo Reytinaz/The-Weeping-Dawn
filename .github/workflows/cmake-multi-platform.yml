@@ -20,120 +20,54 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # ─── SFML 3.1.0 (Windows) ─────────────────────────────────
+    # ─── SFML для Windows (статическая) ───
     - name: Cache SFML (Windows)
       if: runner.os == 'Windows'
       id: cache-sfml-win
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/sfml
-        key: sfml-3.1.0-windows-vc17
+        key: sfml-3.1.0-windows-static
 
     - name: Download SFML (Windows)
-      if: runner.os == 'Windows' # && steps.cache-sfml-win.outputs.cache-hit != 'true'
+      if: runner.os == 'Windows' && steps.cache-sfml-win.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        $urls = @(
-          "https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip",
-          "https://github.com/SFML/SFML/releases/download/3.1.0/SFML-3.1.0-windows-vc17-64-bit.zip"
-        )
-        $downloaded = $false
-        foreach ($url in $urls) {
-          Write-Host "Trying to download SFML from $url"
-          for ($i = 0; $i -lt 3; $i++) {
-            try {
-              Invoke-WebRequest -Uri $url -OutFile sfml.zip -TimeoutSec 120 -ErrorAction Stop
-              $downloaded = $true
-              break
-            } catch {
-              Write-Host "Attempt $($i+1) failed: $_"
-              Start-Sleep -Seconds 2
-            }
-          }
-          if ($downloaded) { break }
-        }
-        if (-not $downloaded) {
-          Write-Error "Could not download SFML after several attempts"
-          exit 1
-        }
-        Expand-Archive sfml.zip -DestinationPath $env:TEMP\sfml_extracted -Force
-        $inner = Get-ChildItem -Path $env:TEMP\sfml_extracted -Directory | Select-Object -First 1
-        New-Item -ItemType Directory -Force -Path ${{ github.workspace }}\sfml
-        Copy-Item -Path "$($inner.FullName)\*" -Destination ${{ github.workspace }}\sfml -Recurse -Force
-        Remove-Item -Recurse -Force $env:TEMP\sfml_extracted
-        Remove-Item -Force sfml.zip
+        $url = "https://www.sfml-dev.org/files/SFML-3.1.0-windows-vc17-64-bit.zip"
+        Invoke-WebRequest -Uri $url -OutFile sfml.zip
+        Expand-Archive sfml.zip -DestinationPath ${{ github.workspace }}/sfml -Force
+        Remove-Item sfml.zip
 
-    # ─── SFML 3.1.0 (Linux) ───────────────────────────────────
+    # ─── SFML для Linux (динамическая) ───
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
         sudo apt-get install -y libsfml-dev libharfbuzz-dev
 
-    - name: Cache SFML (Linux)
-      if: runner.os == 'Linux'
-      id: cache-sfml-linux
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/sfml
-        key: sfml-3.1.0-linux-gcc-64
-
-    - name: Download SFML (Linux)
-      if: runner.os == 'Linux' && steps.cache-sfml-linux.outputs.cache-hit != 'true'
-      run: |
-        set +e
-        for url in \
-          "https://www.sfml-dev.org/files/SFML-3.1.0-linux-gcc-64-bit.tar.gz" \
-          "https://github.com/SFML/SFML/releases/download/3.1.0/SFML-3.1.0-linux-gcc-64-bit.tar.gz"
-        do
-          for i in 1 2 3; do
-            wget -q "$url" && break 2
-            echo "Attempt $i failed, retrying..."
-            sleep 2
-          done
-        done
-        set -e
-        mkdir -p ${{ github.workspace }}/sfml
-        tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
-
-    # ─── Configuration CMake ───────────────────────────────────
-    - name: Configure CMake (Windows)
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="$env:GITHUB_WORKSPACE\sfml\lib\cmake\SFML"
-
-    - name: Configure CMake (Linux)
-      if: runner.os == 'Linux'
-      shell: bash
-      run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="${{ github.workspace }}/sfml/lib/cmake/SFML"
-
-    # ─── Build ───────────────────────────────────────────────
-    - name: Build (Windows)
-      if: runner.os == 'Windows'
+    # ─── Конфигурация CMake ───
+    - name: Configure CMake
       shell: pwsh
       run: |
-        cmake --build build --config ${{ matrix.build_type }}
-        if (Test-Path "$env:GITHUB_WORKSPACE\sfml\bin") {
-          Copy-Item -Path "$env:GITHUB_WORKSPACE\sfml\bin\*" -Destination "build\${{ matrix.build_type }}" -Recurse -Force
+        if ("${{ runner.os }}" -eq "Windows") {
+          $sfmlDir = "${{ github.workspace }}\sfml\lib\cmake\SFML"
+        } else {
+          $sfmlDir = "/usr/lib/x86_64-linux-gnu/cmake/SFML"
         }
-        if (Test-Path "$env:GITHUB_WORKSPACE\sfml\extlibs\bin") {
-          Copy-Item -Path "$env:GITHUB_WORKSPACE\sfml\extlibs\bin\*" -Destination "build\${{ matrix.build_type }}" -Recurse -Force
-        }
+        cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="$sfmlDir"
 
-    - name: Build (Linux)
-      if: runner.os == 'Linux'
-      shell: bash
+    # ─── Сборка ───
+    - name: Build
+      shell: pwsh
       run: cmake --build build --config ${{ matrix.build_type }}
 
-    # ─── Artifacts ────────────────────────────────────────────
+    # ─── Артефакты ───
     - name: Upload Windows artifact
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
       with:
         name: TheWeepingDawn-Windows
         path: |
-          # build/${{ matrix.build_type }}/TheWeepingDawn.exe
-          # build/${{ matrix.build_type }}/*.dll
           TheWeepingDawn.exe
           assets/
 
@@ -143,6 +77,5 @@ jobs:
       with:
         name: TheWeepingDawn-Linux
         path: |
-          #build/TheWeepingDawn
           TheWeepingDawn
           assets/
