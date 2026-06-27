@@ -20,7 +20,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # ─── Windows: скачиваем и кэшируем SFML 3.1.0 ────────────────
     - name: Cache SFML (Windows)
       if: runner.os == 'Windows'
       id: cache-sfml-win
@@ -38,7 +37,6 @@ jobs:
         Expand-Archive sfml.zip -DestinationPath ${{ github.workspace }}/sfml -Force
         Remove-Item sfml.zip
 
-    # ─── Linux: скачиваем SFML 3.1.0 (готовые бинарники) ─────────
     - name: Cache SFML (Linux)
       if: runner.os == 'Linux'
       id: cache-sfml-linux
@@ -54,14 +52,12 @@ jobs:
         mkdir -p ${{ github.workspace }}/sfml
         tar -xzf SFML-3.1.0-linux-gcc-64-bit.tar.gz -C ${{ github.workspace }}/sfml --strip-components=1
 
-    # ─── Установка системных зависимостей для Linux ───────────────
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
         sudo apt-get install -y libx11-dev libharfbuzz-dev libfreetype6-dev libgl1-mesa-dev
 
-    # ─── Конфигурация CMake ─────────────────────────────────────
     - name: Configure CMake
       shell: pwsh
       run: |
@@ -72,12 +68,10 @@ jobs:
         }
         cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DSFML_DIR="$sfmlDir"
 
-    # ─── Сборка ──────────────────────────────────────────────────
     - name: Build
       shell: pwsh
       run: cmake --build build --config ${{ matrix.build_type }}
 
-    # ─── Подготовка артефактов ──────────────────────────────────
     - name: Prepare Windows artifact
       if: runner.os == 'Windows'
       shell: pwsh
@@ -89,7 +83,6 @@ jobs:
       run: |
         cp build/TheWeepingDawn .
 
-    # ─── Загрузка артефактов ────────────────────────────────────
     - name: Upload Windows artifact
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4

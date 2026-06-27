@@ -21,7 +21,7 @@ struct keyBindData {
 	std::function<void(Engine&)> func;
 };
 struct userSettings {
-	float mouse_sensivity = 0.5f;
+	float mouse_sensivity = 0.4f;
 	float view_distance = 0.75f;
 	bool invert_y = false;
 	float gamma = 1.0f;
@@ -90,6 +90,8 @@ public:
 	void update();
 	void render();
 	void logic();
+
+	std::filesystem::path getExecutablePath();
 
 	void bindKey(const sf::Keyboard::Key&, const std::function<void(Engine& engine)>& func);
 	void unbindKey(const sf::Keyboard::Key&);

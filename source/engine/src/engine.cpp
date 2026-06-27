@@ -11,12 +11,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-namespace {
-	std::filesystem::path resourcesDir() {
-		return "";
-	}
-}
-
 #ifdef _WIN32
 	LRESULT CALLBACK Engine::SubclassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam,
 		UINT_PTR subclassId, DWORD_PTR refData) {
@@ -126,6 +120,7 @@ void Engine::initVariables() {
 	this->usrSettings = userSettings();
 	this->renderer = new Renderer(vidMode.getDesktopMode().size.x, vidMode.getDesktopMode().size.y);
 	this->renderer->camera = std::make_shared<Camera>();
+	std::filesystem::current_path(getExecutablePath());
 }
 
 void Engine::initWindow() {
@@ -407,6 +402,23 @@ void Engine::logic() {
 	}
 }
 
+std::filesystem::path Engine::getExecutablePath() {
+	#ifdef _WIN32
+		wchar_t buffer[MAX_PATH];
+		GetModuleFileNameW(NULL, buffer, MAX_PATH);
+		return std::filesystem::path(buffer).parent_path();
+	#elif __linux__
+		return std::filesystem::canonical("/proc/self/exe").parent_path();
+	#elif __APPLE__
+		char path[PATH_MAX];
+		uint32_t size = sizeof(path);
+		if (_NSGetExecutablePath(path, &size) == 0) {
+			return std::filesystem::path(path).parent_path();
+		}
+	#endif
+	return std::filesystem::current_path(); // fallback
+}
+
 void Engine::createThread(const std::function<void(Engine& engine)>& func) {
 	threads.emplace_back([this, func] { func(*this); });
 }
@@ -423,11 +435,11 @@ void Engine::unbindKey(const sf::Keyboard::Key& key) {
 }
 
 sf::Font Engine::loadFont(const std::string& path) {
-	return sf::Font(resourcesDir() / path);
+	return sf::Font(path);
 }
 
 sf::Texture Engine::createTexture(const std::string& path) {
-	return sf::Texture(resourcesDir() / path);
+	return sf::Texture(path);
 }
 void Engine::setCharacter(std::shared_ptr<Character> char1) {
 	character = char1;
