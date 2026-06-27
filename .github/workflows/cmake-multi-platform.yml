@@ -28,8 +28,8 @@ jobs:
       with:
         name: TheWeepingDawn-Windows
         path: |
-          build/Release/TheWeepingDawn.exe
-          build/Release/assets/
+          TheWeepingDawn.exe
+          assets/
 
   build-linux:
     runs-on: ubuntu-latest
@@ -67,5 +67,5 @@ jobs:
       with:
         name: TheWeepingDawn-Linux
         path: |
-          build/TheWeepingDawn
-          build/assets/
+          TheWeepingDawn
+          assets/
